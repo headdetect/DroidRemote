@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, ComputerRemoteActivity!</string>
+    <string name="app_name">Computer Remote</string>
+    <string name="sleep">Sleep</string>
+    <string name="power_controls">Power Controls</string>
+    <string name="run_cmd">Run Command</string>
+    <string name="play_music">Play Music</string>
+    <string name="control_mouse">Control Mouse</string>
+    <string name="loading">Loading</string>
+    <string name="manually">Enter IP</string>
+    <string name="refresh">Refresh</string>
+
+</resources>
