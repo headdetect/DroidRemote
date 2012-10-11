@@ -1,4 +1,4 @@
-package com.headdetect.computerremote.Networking;
+/*package com.headdetect.computerremote.Networking;
 
 public class PingHandler implements Runnable {
 
@@ -28,4 +28,4 @@ public class PingHandler implements Runnable {
 		mHandle.disconnect("You timed out from the server");
 		
 	}
-}
+}*/

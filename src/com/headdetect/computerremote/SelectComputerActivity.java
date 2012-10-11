@@ -2,13 +2,6 @@ package com.headdetect.computerremote;
 
 import java.net.Socket;
 
-import com.headdetect.computerremote.Networking.Packet;
-import com.headdetect.computerremote.Networking.packets.PacketHandShake;
-import com.headdetect.computerremote.Networking.packets.PacketLogin;
-import com.headdetect.computerremote.Utils.Computer;
-import com.headdetect.computerremote.Utils.ServerUtils;
-import com.headdetect.computerremote.Utils.ServerUtils.DiscoverComputers;
-
 import android.app.Activity;
 import android.content.Context;
 import android.net.wifi.WifiManager;
@@ -25,6 +18,10 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.headdetect.computerremote.Utils.Computer;
+import com.headdetect.computerremote.Utils.ServerUtils;
+import com.headdetect.computerremote.Utils.ServerUtils.DiscoverComputers;
 
 public class SelectComputerActivity extends Activity {
 
@@ -54,6 +51,9 @@ public class SelectComputerActivity extends Activity {
 
 		mLabel = (TextView) findViewById(R.id.textView1);
 		mProg = (ProgressBar) findViewById(R.id.progressBar1);
+		
+		mLoader = new ComputerList();
+		mLoader.execute();
 
 	}
 	
@@ -61,15 +61,9 @@ public class SelectComputerActivity extends Activity {
 	protected void connect(Computer item) {
 		mLoader.cancel(true);
 		try {
-			Socket mSocket = new Socket(item.IP.getHostAddress(), 45903);
-			PacketLogin mLogin = new PacketLogin("user","pass");
-			Packet.QuickSend(mSocket, mLogin);
-			if(((PacketHandShake)Packet.QuickRead(mSocket, 1)).isAllowed()){
-				makeToast("Connected");
-			}
-			else{
-				makeToast("Denied");
-			}
+			//Socket mSocket = new Socket(item.IP.getHostAddress(), 45903);
+			
+			//TODO: stuff
 		} catch (Exception e) {
 			makeToast("Error connecting to computer");
 		}
@@ -80,7 +74,7 @@ public class SelectComputerActivity extends Activity {
 
 			@Override
 			public void run() {
-				Toast.makeText(SelectComputerActivity.this, message, 1);
+				Toast.makeText(SelectComputerActivity.this, message, Toast.LENGTH_LONG).show();
 			}
 		});
 	}
@@ -103,6 +97,10 @@ public class SelectComputerActivity extends Activity {
 	        	mLabel.setText("Looking for servers...");
 	        	mProg.setVisibility(View.VISIBLE);
 	        	mAdapter.clear();
+	        	
+	        	if(mLoader != null){
+	        		mLoader.cancel(true);
+	        	}
 	    		mLoader = new ComputerList();
 	    		mLoader.execute();
 	            return true;

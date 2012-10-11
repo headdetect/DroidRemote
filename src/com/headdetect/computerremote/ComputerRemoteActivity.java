@@ -1,18 +1,13 @@
 package com.headdetect.computerremote;
 
-import java.net.Socket;
-import com.headdetect.computerremote.Networking.PacketHandler;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.widget.Button;
 
 public class ComputerRemoteActivity extends Activity {
 
-	private Socket mSocket;
-
-	private PacketHandler mHandler;
 
 	private boolean connected;
 

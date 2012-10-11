@@ -5,18 +5,16 @@ import java.net.Socket;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class PacketQue
-{
-	private Queue<Packet>	inQue;
-	private Queue<Packet>	outQue;
-	private PacketReader	packetReader;
-	private boolean			running;
-	private Socket			socket;
-	private PacketWriter	packetWriter;
-	private Exception		error;
+public class PacketQue {
+	private Queue<Packet> inQue;
+	private Queue<Packet> outQue;
+	private PacketReader packetReader;
+	private boolean running;
+	private Socket socket;
+	private PacketWriter packetWriter;
+	private Exception error;
 
-	public PacketQue(Socket socket) throws IOException
-	{
+	public PacketQue(Socket socket) throws IOException {
 		this.packetReader = new PacketReader(socket.getInputStream());
 		this.packetWriter = new PacketWriter(socket.getOutputStream());
 		inQue = new LinkedList<Packet>();
@@ -27,17 +25,14 @@ public class PacketQue
 		new SendThread().start();
 	}
 
-	private void error(Exception ex)
-	{
+	private void error(Exception ex) {
 		this.error = ex;
-		if (this.error == null)
-		{
+		if (this.error == null) {
 			this.error = new Exception("ReadPacket returned null!");
 		}
 	}
 
-	public Exception getError()
-	{
+	public Exception getError() {
 		return error;
 	}
 
@@ -48,68 +43,52 @@ public class PacketQue
 	 * @throws Exception
 	 *             If a network error occured
 	 */
-	public Packet getNextPacket() throws Exception
-	{
-		if (error != null) throw error;
-		synchronized (inQue)
-		{
+	public Packet getNextPacket() throws Exception {
+		if (error != null)
+			throw error;
+		synchronized (inQue) {
 			return inQue.poll();
 		}
 	}
 
-	public void sendPacket(Packet packet) throws Exception
-	{
-		if (error != null) throw error;
-		synchronized (outQue)
-		{
+	public void sendPacket(Packet packet) throws Exception {
+		if (error != null)
+			throw error;
+		synchronized (outQue) {
 			outQue.offer(packet);
 		}
 	}
 
 	/**
-	 * Kills the packet que (closes threads to prevent leaks). Leaves socket open!
+	 * Kills the packet que (closes threads to prevent leaks). Leaves socket
+	 * open!
 	 */
-	public void close()
-	{
+	public void close() {
 		running = false;
 	}
 
-	private class SendThread extends Thread
-	{
-		public SendThread()
-		{
+	private class SendThread extends Thread {
+		public SendThread() {
 			super("Packet sending thread for socket " + socket);
 		}
 
 		@Override
-		public void run()
-		{
-			while (running)
-			{
+		public void run() {
+			while (running) {
 				Packet packet = null;
-				synchronized (outQue)
-				{
+				synchronized (outQue) {
 					packet = outQue.poll();
 				}
-				if (packet != null)
-				{
-					try
-					{
+				if (packet != null) {
+					try {
 						packetWriter.sendPacket(packet);
-					}
-					catch (IOException e)
-					{
+					} catch (IOException e) {
 						error(e);
 					}
-				}
-				else
-				{
-					try
-					{
+				} else {
+					try {
 						Thread.sleep(1);
-					}
-					catch (InterruptedException e)
-					{
+					} catch (InterruptedException e) {
 						// Don't care
 					}
 				}
@@ -117,45 +96,30 @@ public class PacketQue
 		};
 	}
 
-	private class RecvThread extends Thread
-	{
-		public RecvThread()
-		{
+	private class RecvThread extends Thread {
+		public RecvThread() {
 			super("Packet reading thread for socket " + socket);
 		}
 
 		@Override
-		public void run()
-		{
-			while (running)
-			{
+		public void run() {
+			while (running) {
 				Packet packet = null;
 				Exception ex = null;
-				try
-				{
+				try {
 					packet = packetReader.readPacket();
-				}
-				catch (IllegalArgumentException e)
-				{
+				} catch (IllegalArgumentException e) {
+					ex = e;
+				} catch (IOException e) {
+					ex = e;
+				} catch (Exception e) {
 					ex = e;
 				}
-				catch (IOException e)
-				{
-					ex = e;
-				}
-				catch (Exception e)
-				{
-					ex = e;
-				}
-				if (packet == null)
-				{
+				if (packet == null) {
 					error(ex);
 					continue;
-				}
-				else
-				{
-					synchronized (inQue)
-					{
+				} else {
+					synchronized (inQue) {
 						inQue.add(packet);
 					}
 				}
