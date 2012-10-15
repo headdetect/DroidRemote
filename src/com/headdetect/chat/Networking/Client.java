@@ -29,6 +29,7 @@ import java.net.Socket;
 
 import com.headdetect.chat.Listeners.ChatListener;
 import com.headdetect.chat.Listeners.ConnectionListener;
+import com.headdetect.computerremote.Networking.Packet;
 import com.headdetect.computerremote.Networking.PacketQue;
 import com.headdetect.computerremote.Networking.packets.PacketMessage;
 
@@ -143,7 +144,13 @@ public class Client implements Runnable {
 
 			while (!disconnecting) {
 
-				PacketMessage msg = (PacketMessage) mPacketQueue.getNextPacket();
+				Packet pack = mPacketQueue.getNextPacket();
+				if (pack == null) {
+					Thread.sleep(100);
+					continue;
+				}
+
+				PacketMessage msg = (PacketMessage) pack;
 				chatListener.onChat(msg.getMessage());
 			}
 
@@ -204,7 +211,7 @@ public class Client implements Runnable {
 		if (connectionListener != null) {
 			connectionListener.onDisconnect(this);
 		}
-		
+
 		mPacketQueue.close();
 
 	}
