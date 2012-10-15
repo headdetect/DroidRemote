@@ -19,8 +19,6 @@
  */
 package com.headdetect.chat.Listeners;
 
-import javax.sql.ConnectionEvent;
-
 import com.headdetect.chat.Networking.Client;
 
 /**
