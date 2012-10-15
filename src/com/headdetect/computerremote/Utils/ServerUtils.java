@@ -1,43 +1,61 @@
 package com.headdetect.computerremote.Utils;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
 import java.net.InetAddress;
-import java.net.Socket;
+import java.net.InetSocketAddress;
+import java.net.MulticastSocket;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 import android.app.Service;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
-import android.util.Log;
-
-import com.headdetect.computerremote.Networking.Packet;
-import com.headdetect.computerremote.Networking.packets.PacketInfo;
 
 public class ServerUtils {
 
 	public static DiscoverComputers mListener;
+	
+	private static boolean search = true;
 
 	public static void getComputersOnNetwork(WifiManager mWifi) {
+		InetAddress ia = null;
+		byte[] buffer = new byte[0xFF];
+		DatagramPacket dp = new DatagramPacket(buffer, buffer.length);
+		int port = 5000;
+
 		try {
-			byte[] ip = ipToBytes(mWifi.getDhcpInfo().gateway);
-			for (int i = 2; i < 255; i++) {
-				ip[3] = (byte)i;
-				Log.d("Remote", "Pinging: " + ipToString(ip));
-				InetAddress add = InetAddress.getByAddress(ip);
-				if (add.isReachable(400)) {
-					if (mListener != null) {
-						String name = getServerName(add);
-						if (name != null)
-							mListener.OnDiscover(new Computer(name, add));
-					}
-					Log.d("Remote", ipToString(ip) + " was a success");
-				}
-				if(i == 255)
-					Log.d("WTF", "ITS 255");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			ia = InetAddress.getByName("224.0.2.60");
+		} catch (UnknownHostException e) {
+			System.err.println(e);
 		}
+
+		try {
+			MulticastSocket ms = new MulticastSocket(port);
+			ms.joinGroup(ia);
+
+			while (search) {
+				ms.receive(dp);
+				byte[] data = dp.getData();
+
+				String concat = new String(data, "ASCII");
+
+				mListener.OnDiscover(new Computer(concat, ((InetSocketAddress)dp.getSocketAddress()).getAddress()));
+			}
+
+		} catch (SocketException se) {
+			System.err.println(se);
+		} catch (IOException ie) {
+			System.err.println(ie);
+		}
+
+	}
+	
+	public static void stopSearch(){
+		search = false;
+		
 	}
 
 	public static byte[] ipToBytes(int i) {
@@ -57,17 +75,6 @@ public class ServerUtils {
 		return mWifi.isConnected();
 	}
 
-	public static String getServerName(InetAddress s) {
-		try {
-			Socket sd = new Socket(s.getHostAddress(), 45903);
-			sd.setSoTimeout(1000);
-			Packet.QuickSend(sd, new PacketInfo());
-			PacketInfo info = (PacketInfo) Packet.QuickRead(sd, 5);
-			return info.getCompName();
-		} catch (Exception e) {
-			return null;
-		}
-	}
 
 	public interface DiscoverComputers {
 		void OnDiscover(Computer c);

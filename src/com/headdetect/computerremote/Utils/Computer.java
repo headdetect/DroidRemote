@@ -14,6 +14,6 @@ public class Computer {
 	
 	@Override
 	public String toString(){
-		return Name + " (" + IP + ")";
+		return Name + " (" + IP.toString().substring(1, IP.toString().length()) + ")";
 	}
 }

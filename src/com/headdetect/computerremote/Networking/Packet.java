@@ -10,7 +10,6 @@ import java.nio.ByteBuffer;
 
 import android.util.SparseArray;
 
-import com.headdetect.computerremote.Networking.packets.PacketInfo;
 import com.headdetect.computerremote.Networking.packets.PacketMessage;
 import com.headdetect.computerremote.Networking.packets.PacketPing;
 import com.headdetect.computerremote.Utils.ByteSwapper;
@@ -19,9 +18,8 @@ public abstract class Packet {
 
 	static {
 		packetMap = new SparseArray<Class<? extends Packet>>();
-		registerPacket(PacketMessage.ID, PacketMessage.class);
-		registerPacket(PacketPing.ID, PacketPing.class);
-		registerPacket(PacketInfo.ID, PacketInfo.class);
+		registerPacket(0x04, PacketMessage.class);
+		registerPacket(0x00, PacketPing.class);
 	}
 
 	public final int id;
@@ -110,8 +108,8 @@ public abstract class Packet {
 		byte[] shortBytes = getShort((short)string.length());
 		byte[] stringBytes = string.getBytes("ASCII");
 		
-		System.arraycopy(bytes, 0, shortBytes, 0, shortBytes.length);
-		System.arraycopy(bytes, 2, stringBytes, 0, stringBytes.length);
+		System.arraycopy(shortBytes, 0, bytes, 0, shortBytes.length);
+		System.arraycopy(stringBytes, 0, bytes, 2, stringBytes.length);
 		
 		return bytes;
 	}

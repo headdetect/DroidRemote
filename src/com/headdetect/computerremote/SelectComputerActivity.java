@@ -1,9 +1,8 @@
 package com.headdetect.computerremote;
 
-import java.net.Socket;
-
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.headdetect.chat.ChatClientActivity;
 import com.headdetect.computerremote.Utils.Computer;
 import com.headdetect.computerremote.Utils.ServerUtils;
 import com.headdetect.computerremote.Utils.ServerUtils.DiscoverComputers;
@@ -51,20 +51,26 @@ public class SelectComputerActivity extends Activity {
 
 		mLabel = (TextView) findViewById(R.id.textView1);
 		mProg = (ProgressBar) findViewById(R.id.progressBar1);
-		
+
 		mLoader = new ComputerList();
 		mLoader.execute();
 
 	}
-	
 
 	protected void connect(Computer item) {
-		mLoader.cancel(true);
+		
 		try {
-			//Socket mSocket = new Socket(item.IP.getHostAddress(), 45903);
+
+			ServerUtils.stopSearch();
+			mLoader.cancel(true);
+
+			Intent sillyIntent = new Intent(SelectComputerActivity.this, ChatClientActivity.class);
+			sillyIntent.putExtra("IP", item.IP.toString());
+			startActivity(sillyIntent);
 			
-			//TODO: stuff
+			finish();
 		} catch (Exception e) {
+			e.printStackTrace();
 			makeToast("Error connecting to computer");
 		}
 	}
@@ -78,37 +84,37 @@ public class SelectComputerActivity extends Activity {
 			}
 		});
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.menu_select_computer, menu);
-	    return true;
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_select_computer, menu);
+		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    switch (item.getItemId()) {
-	        case R.id.itmManual:
-	            return true;
-	        case R.id.itmRefresh:
-	        	if(mProg.getVisibility() == View.VISIBLE)
-	        		return true;
-	        	mLabel.setText("Looking for servers...");
-	        	mProg.setVisibility(View.VISIBLE);
-	        	mAdapter.clear();
-	        	
-	        	if(mLoader != null){
-	        		mLoader.cancel(true);
-	        	}
-	    		mLoader = new ComputerList();
-	    		mLoader.execute();
-	            return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
+		switch (item.getItemId()) {
+			case R.id.itmManual:
+				return true;
+			case R.id.itmRefresh:
+				if (mProg.getVisibility() == View.VISIBLE)
+					return true;
+				mLabel.setText("Looking for servers...");
+				mProg.setVisibility(View.VISIBLE);
+				mAdapter.clear();
+
+				if (mLoader != null) {
+					mLoader.cancel(true);
+				}
+				mLoader = new ComputerList();
+				mLoader.execute();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
 	}
-	
+
 	private class ComputerList extends AsyncTask<Void, Void, Void> {
 
 		@Override
@@ -129,6 +135,11 @@ public class SelectComputerActivity extends Activity {
 
 						@Override
 						public void run() {
+							for (int i = 0; i < mAdapter.getCount(); i++) {
+								if (c.Name.equals(mAdapter.getItem(i).Name)) {
+									return;
+								}
+							}
 							mAdapter.add(c);
 						}
 					});
@@ -145,8 +156,13 @@ public class SelectComputerActivity extends Activity {
 
 			mLabel.setText(mAdapter.isEmpty() ? " No servers found :(" : "");
 			mProg.setVisibility(View.GONE);
+		}
 
+		@Override
+		protected void onCancelled() {
+			ServerUtils.stopSearch();
 		}
 	}
 
+	
 }

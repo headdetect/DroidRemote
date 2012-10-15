@@ -6,7 +6,7 @@ import java.io.IOException;
 import com.headdetect.computerremote.Networking.Packet;
 
 public class PacketMessage extends Packet {
-	public static final int ID = 2;
+	public static final int ID = 4;
 	private String message;
 
 	public PacketMessage() {

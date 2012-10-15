@@ -7,7 +7,7 @@ import com.headdetect.computerremote.Networking.Packet;
 
 public class PacketPing extends Packet {
 
-	public static final int ID = 0x04;
+	public static final int ID = 0x00;
 
 	public PacketPing() {
 		super(ID);

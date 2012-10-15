@@ -22,6 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name="ComputerRemoteActivity" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"></activity>
+        <activity android:name="com.headdetect.chat.ChatClientActivity" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"></activity>
     </application>
 
 </manifest>

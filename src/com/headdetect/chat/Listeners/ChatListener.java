@@ -17,34 +17,30 @@
  *	permissions and limitations under the Licenses.
  * 
  */
-package com.headdetect.computerremote.Networking;
+package com.headdetect.chat.Listeners;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 
-public class PacketWriter {
-	private DataOutputStream out;
-
+// TODO: Auto-generated Javadoc
+/**
+ * The listener interface for receiving chat events.
+ * The class that is interested in processing a chat
+ * event implements this interface, and the object created
+ * with that class is registered with a component using the
+ * component's <code>setOnChatListener<code> method. When
+ * the chat event occurs, that object's appropriate
+ * method is invoked.
+ *
+ * @see ChatEvent
+ */
+public interface ChatListener {
+	
 	/**
-	 * Instantiates a new packet writer.
+	 * When a chat message has been received
 	 *
-	 * @param out the out
-	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @param message the message
 	 */
-	public PacketWriter(OutputStream out) throws IOException {
-		this.out = new DataOutputStream(out);
-	}
+	void onChat (String message);
 
-	/**
-	 * Sends the packet provided.
-	 *
-	 * @param packet Packet to send
-	 * @throws IOException If there's an error writing to the socket
-	 */
-	public void sendPacket(Packet packet) throws IOException {
-		out.writeByte(packet.id);
-		out.write(packet.writeData());
-		out.flush();
-	}
 }
+
+
