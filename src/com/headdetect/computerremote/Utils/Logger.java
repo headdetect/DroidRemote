@@ -1,6 +1,6 @@
 /*
 
-﻿ *    Copyright 2012 Brayden (headdetect) Lopez
+﻿ *    Copyright 2012 Brayden (headdetect)
  *    
  *    Dual-licensed under the Educational Community License, Version 2.0 and
  *	the GNU General Public License Version 3 (the "Licenses"); you may
@@ -19,11 +19,11 @@
  */
 
 
-package com.headdetect.chat.Utilities;
+package com.headdetect.computerremote.Utils;
 
 import com.headdetect.computerremote.BuildConfig;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Logger.
  */
@@ -34,7 +34,7 @@ public class Logger {
 	// ===========================================================
 	
 	/** The Constant TAG. */
-	private static final String TAG = "Chat Client";
+	private static final String TAG = "ComputerRemote::ChatClient";
 
 	// ===========================================================
 	// Fields
@@ -76,7 +76,7 @@ public class Logger {
 	 *
 	 * @param message the message
 	 */
-	public static void Log(String message){
+	public static void log(String message){
 		if(logListener != null){
 			logListener.OnLog(message);
 		}
@@ -85,13 +85,26 @@ public class Logger {
 	}
 	
 	/**
+	 * Logs the specified exception.
+	 *
+	 * @param ex the exception.
+	 */
+	public static void log(Exception ex){
+		if(logListener != null){
+			logListener.OnLog(ex.getMessage());
+		}
+		
+		android.util.Log.e(TAG, ex.getMessage(), ex);
+	}
+	
+	/**
 	 * Log a message using a String format method.
 	 *
 	 * @param format the format
 	 * @param args the args
 	 */
-	public static void LogF(String format, Object... args){
-		Log(String.format(format, args));
+	public static void logF(String format, Object... args){
+		log(String.format(format, args));
 	}
 
 	/**
@@ -99,11 +112,11 @@ public class Logger {
 	 *
 	 * @param message the message
 	 */
-	public static void LogDebug(String message){
+	public static void logDebug(String message){
 		if(!BuildConfig.DEBUG)
 			return;
 		
-		Log(message);
+		log(message);
 	}
 
 	// ===========================================================

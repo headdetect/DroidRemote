@@ -19,7 +19,7 @@
  */
 package com.headdetect.chat;
 
-import com.headdetect.chat.Utilities.DateUtils;
+import com.headdetect.computerremote.Utils.DateUtils;
 
 // TODO: Auto-generated Javadoc
 /**

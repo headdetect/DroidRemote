@@ -16,5 +16,6 @@
     <string name="txt_chat_hint">Type a message</string>
     <string name="empty"></string>
     <string name="start_chatting">Start Chatting</string>
+    <string name="design_computer_name">&lt;Computer Name&gt;</string>
 
 </resources>

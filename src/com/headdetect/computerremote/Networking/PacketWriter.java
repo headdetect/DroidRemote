@@ -24,27 +24,61 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class PacketWriter {
+
+	// ===========================================================
+	// Constants
+	// ===========================================================
+
+	// ===========================================================
+	// Fields
+	// ===========================================================
+
 	private DataOutputStream out;
+
+	// ===========================================================
+	// Constructors
+	// ===========================================================
 
 	/**
 	 * Instantiates a new packet writer.
-	 *
-	 * @param out the out
-	 * @throws IOException Signals that an I/O exception has occurred.
+	 * 
+	 * @param out
+	 *            the out
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	public PacketWriter(OutputStream out) throws IOException {
 		this.out = new DataOutputStream(out);
 	}
 
+	// ===========================================================
+	// Getter & Setter
+	// ===========================================================
+
+	// ===========================================================
+	// Methods for/from SuperClass/Interfaces
+	// ===========================================================
+
+	// ===========================================================
+	// Methods
+	// ===========================================================
+
 	/**
 	 * Sends the packet provided.
-	 *
-	 * @param packet Packet to send
-	 * @throws IOException If there's an error writing to the socket
+	 * 
+	 * @param packet
+	 *            Packet to send
+	 * @throws IOException
+	 *             If there's an error writing to the socket
 	 */
 	public void sendPacket(Packet packet) throws IOException {
 		out.writeByte(packet.id);
 		out.write(packet.writeData());
 		out.flush();
 	}
+
+	// ===========================================================
+	// Inner and Anonymous Classes
+	// ===========================================================
+
 }

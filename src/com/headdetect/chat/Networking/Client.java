@@ -20,8 +20,6 @@
 
 package com.headdetect.chat.Networking;
 
-import static com.headdetect.chat.Utilities.Constants.PORT;
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -177,7 +175,7 @@ public class Client implements Runnable {
 	 */
 	public static Client connect(String address) throws IOException {
 		InetAddress localAddress = InetAddress.getByName(address);
-		InetSocketAddress localSocketAddress = new InetSocketAddress(localAddress, PORT);
+		InetSocketAddress localSocketAddress = new InetSocketAddress(localAddress, 45903);
 
 		Socket socket = new Socket();
 		socket.connect(localSocketAddress, 5000);

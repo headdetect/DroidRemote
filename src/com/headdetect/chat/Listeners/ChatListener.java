@@ -19,8 +19,6 @@
  */
 package com.headdetect.chat.Listeners;
 
-
-// TODO: Auto-generated Javadoc
 /**
  * The listener interface for receiving chat events.
  * The class that is interested in processing a chat

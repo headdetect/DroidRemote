@@ -1,3 +1,22 @@
+/*
+
+﻿ *    Copyright 2012 Brayden (headdetect)
+ *    
+ *    Dual-licensed under the Educational Community License, Version 2.0 and
+ *	the GNU General Public License Version 3 (the "Licenses"); you may
+ *	not use this file except in compliance with the Licenses. You may
+ *	obtain a copy of the Licenses at
+ *
+ *		http://www.opensource.org/licenses/ecl2.php
+ *		http://www.gnu.org/licenses/gpl-3.0.html
+ *
+ *		Unless required by applicable law or agreed to in writing
+ *	software distributed under the Licenses are distributed on an "AS IS"
+ *	BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ *	or implied. See the Licenses for the specific language governing
+ *	permissions and limitations under the Licenses.
+ * 
+ */
 package com.headdetect.computerremote;
 
 import android.app.Activity;
@@ -23,24 +42,55 @@ import com.headdetect.computerremote.Utils.Computer;
 import com.headdetect.computerremote.Utils.ServerUtils;
 import com.headdetect.computerremote.Utils.ServerUtils.DiscoverComputers;
 
+/**
+ * The Class SelectComputerActivity.
+ */
 public class SelectComputerActivity extends Activity {
-
+	
+	// ===========================================================
+	// Constants
+	// ===========================================================
+	
+	// ===========================================================
+	// Fields
+	// ===========================================================
+	
 	private ListView mList;
+	
 	private ArrayAdapter<Computer> mAdapter;
 
 	private TextView mLabel;
+	
 	private ProgressBar mProg;
 
 	private ComputerList mLoader;
 
+	// ===========================================================
+	// Constructors
+	// ===========================================================
+
+	// ===========================================================
+	// Getter & Setter
+	// ===========================================================
+
+	// ===========================================================
+	// Methods for/from SuperClass/Interfaces
+	// ===========================================================
+	
+	/**
+	 * On create.
+	 *
+	 * @param savedInstanceState the saved instance state
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.layout_select_computer);
-		mList = (ListView) findViewById(R.id.lstComputers);
+		setContentView(R.layout.activity_computer_browser);
+		
 		mAdapter = new ArrayAdapter<Computer>(this, android.R.layout.simple_list_item_1);
+		
+		mList = (ListView) findViewById(R.id.lstComputers);
 		mList.setAdapter(mAdapter);
-
 		mList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -56,35 +106,13 @@ public class SelectComputerActivity extends Activity {
 		mLoader.execute();
 
 	}
-
-	protected void connect(Computer item) {
-		
-		try {
-
-			ServerUtils.stopSearch();
-			mLoader.cancel(true);
-
-			Intent sillyIntent = new Intent(SelectComputerActivity.this, ChatClientActivity.class);
-			sillyIntent.putExtra("IP", item.IP.toString());
-			startActivity(sillyIntent);
-			
-			finish();
-		} catch (Exception e) {
-			e.printStackTrace();
-			makeToast("Error connecting to computer");
-		}
-	}
-
-	private void makeToast(final String message) {
-		runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				Toast.makeText(SelectComputerActivity.this, message, Toast.LENGTH_LONG).show();
-			}
-		});
-	}
-
+	
+	/**
+	 * On create options menu.
+	 *
+	 * @param menu the menu
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -92,10 +120,19 @@ public class SelectComputerActivity extends Activity {
 		return true;
 	}
 
+	/**
+	 * On options item selected.
+	 *
+	 * @param item the item
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.itmManual:
+				
+				//TODO: Dialog, then manual connectivity.
+				
 				return true;
 			case R.id.itmRefresh:
 				if (mProg.getVisibility() == View.VISIBLE)
@@ -115,8 +152,62 @@ public class SelectComputerActivity extends Activity {
 		}
 	}
 
+	// ===========================================================
+	// Methods
+	// ===========================================================
+	
+	/**
+	 * Connect to the specified computer
+	 *
+	 * @param item
+	 *            the computer to connect to
+	 */
+	public void connect(Computer item) {
+		
+		try {
+
+			ServerUtils.stopSearch();
+			mLoader.cancel(true);
+
+			Intent sillyIntent = new Intent(SelectComputerActivity.this, ChatClientActivity.class);
+			sillyIntent.putExtra("IP", item.getIp().toString());
+			startActivity(sillyIntent);
+			
+			finish();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			makeToast("Error connecting to computer");
+		}
+	}
+
+	/**
+	 * A quick method to show a toast notification. All toasts are shown for Toast.LENGTH_LONG
+	 * @param message
+	 *               The message to show
+	 */
+	public void makeToast(final String message) {
+		runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				Toast.makeText(SelectComputerActivity.this, message, Toast.LENGTH_LONG).show();
+			}
+		});
+	}
+
+	// ===========================================================
+	// Inner and Anonymous Classes
+	// ===========================================================
+
+	/**
+	 * The Class ComputerList.
+	 */
 	private class ComputerList extends AsyncTask<Void, Void, Void> {
 
+		/* (non-Javadoc)
+		 * @see android.os.AsyncTask#doInBackground(Params[])
+		 */
 		@Override
 		protected Void doInBackground(Void... arg0) {
 
@@ -127,30 +218,38 @@ public class SelectComputerActivity extends Activity {
 				return null;
 			}
 
-			ServerUtils.mListener = new DiscoverComputers() {
+			ServerUtils.setListener( new DiscoverComputers() {
 
 				@Override
 				public void OnDiscover(final Computer c) {
+					
+					for (int i = 0; i < mAdapter.getCount(); i++) {
+						if (c.getName().equals(mAdapter.getItem(i).getName())) {
+							return;
+						}
+					}
+					
 					SelectComputerActivity.this.runOnUiThread(new Runnable() {
 
 						@Override
 						public void run() {
-							for (int i = 0; i < mAdapter.getCount(); i++) {
-								if (c.Name.equals(mAdapter.getItem(i).Name)) {
-									return;
-								}
-							}
+							
 							mAdapter.add(c);
+							
 						}
+						
 					});
 
 				}
-			};
-			ServerUtils.getComputersOnNetwork(mWifi);
+			} );
+			ServerUtils.getComputersOnNetwork();
 
 			return null;
 		}
 
+		/* (non-Javadoc)
+		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+		 */
 		@Override
 		protected void onPostExecute(Void parms) {
 
@@ -158,6 +257,9 @@ public class SelectComputerActivity extends Activity {
 			mProg.setVisibility(View.GONE);
 		}
 
+		/* (non-Javadoc)
+		 * @see android.os.AsyncTask#onCancelled()
+		 */
 		@Override
 		protected void onCancelled() {
 			ServerUtils.stopSearch();

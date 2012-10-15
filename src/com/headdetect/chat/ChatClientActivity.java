@@ -1,6 +1,6 @@
 /*
 
-﻿ *    Copyright 2012 Brayden (headdetect) Lopez
+﻿ *    Copyright 2012 Brayden (headdetect)
  *    
  *    Dual-licensed under the Educational Community License, Version 2.0 and
  *	the GNU General Public License Version 3 (the "Licenses"); you may
@@ -17,10 +17,10 @@
  *	permissions and limitations under the Licenses.
  * 
  */
+
 package com.headdetect.chat;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -86,7 +86,7 @@ public class ChatClientActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.layout_chat_main);
+		setContentView(R.layout.activity_chat);
 
 		chatAdapter = new ChatListAdapter(this, new ArrayList<ChatItem>());
 

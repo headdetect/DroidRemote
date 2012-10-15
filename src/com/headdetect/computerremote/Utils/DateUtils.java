@@ -17,23 +17,25 @@
  *	permissions and limitations under the Licenses.
  * 
  */
-package com.headdetect.chat.Utilities;
+package com.headdetect.computerremote.Utils;
 
-// TODO: Auto-generated Javadoc
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 /**
- * The Class Constants.
+ * The Class DateUtils.
  */
-public class Constants {
+public class DateUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
-	/** The Constant PORT. */
-	public static final int PORT = 45903;
+	/** The Constant DATE_FORMAT_NOW_FULL. */
+	public static final String DATE_FORMAT_NOW_FULL = "yyyy-MM-dd HH:mm:ss";
 	
-	/** The Constant MAX_USERS. */
-	public static final int MAX_USERS = 1;
-	
+	/** The Constant DATE_FORMAT_NOW_SHORT. */
+	public static final String DATE_FORMAT_NOW_SHORT = "EEE d, HH:mm";
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -54,9 +56,28 @@ public class Constants {
 	// Methods
 	// ===========================================================
 
+	/**
+	 * The the current date and time.
+	 *
+	 * @return The the current date and time.
+	 */
+	public static String now() {
+		return now(DATE_FORMAT_NOW_SHORT);
+	}
+	
+	/**
+	 * The the current date and time.
+	 *
+	 * @param format the format
+	 * @return The the current date and time.
+	 */
+	public static String now(String format) {
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		return sdf.format(cal.getTime());
+	}
+
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
 }
-
-

@@ -14,7 +14,7 @@ public class ComputerRemoteActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		setContentView(R.layout.activity_computer_control_panel);
 
 		((Button) findViewById(R.id.btnPower)).setOnClickListener(new OnClickListener() {
 
