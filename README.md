@@ -11,7 +11,7 @@ ComputerRemote Client Side
  * Connect for a short time on a computer running the server
 
 ## Upcoming Features
- * Chat between computer and client
+ * Chat between computer and client (Working as of [This Version](https://github.com/headdetect/ComputerRemote-Client/tree/437a9122d58a22e7a1ee8ced8bbd40b422d9ea10))
  * run scrips (Batch or Shell)
  * Remotely shutdown computer
  * (Maybe) VNC fork
