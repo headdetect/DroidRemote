@@ -22,7 +22,7 @@ package com.headdetect.computerremote.dialogs;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
+import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -73,6 +73,7 @@ public class ComputerOptionsDialog extends DialogFragment {
 		builder.setTitle(computer.getName() + " Options");
 
 		builder.setItems(R.array.options, new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				if (mListener != null)
 					mListener.onComputerOptionClicked(which, computer);

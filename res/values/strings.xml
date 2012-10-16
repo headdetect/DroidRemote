@@ -21,12 +21,14 @@
     <string-array name="options">
         <item>Chat</item>
         <item>Power</item>
+        <item >Run Command</item>
     </string-array>
     
     <string-array name="power_options">
         <item>Shutdown</item>
         <item>Restart</item>
         <item>Sleep</item>
+        <item>Log Off</item>
         <item>Lock</item>
     </string-array>
 

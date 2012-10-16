@@ -109,6 +109,8 @@ public abstract class Client implements Runnable {
 		if (connectionListener != null) {
 			connectionListener.onJoin(this);
 		}
+		
+		mPacketQueue.start();
 
 		try {
 
@@ -150,6 +152,7 @@ public abstract class Client implements Runnable {
 		}
 
 		mPacketQueue.close();
+		
 		try {
 			mSocket.close();
 		} catch (IOException e) {

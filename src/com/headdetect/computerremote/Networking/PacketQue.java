@@ -67,8 +67,6 @@ public class PacketQue {
 		outQue = new LinkedList<Packet>();
 		running = true;
 		this.socket = socket;
-		new RecvThread().start();
-		new SendThread().start();
 	}
 
 	// ===========================================================
@@ -143,6 +141,12 @@ public class PacketQue {
 	 */
 	public void close() {
 		running = false;
+	}
+	
+	public void start(){
+
+		new RecvThread().start();
+		new SendThread().start();
 	}
 	
 	public boolean isRunning() {

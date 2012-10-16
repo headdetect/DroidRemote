@@ -193,7 +193,7 @@ public abstract class Packet {
 	 *             Signals that an I/O exception has occurred.
 	 */
 	public static String readString(DataInputStream mStream) throws IOException {
-		short len = readShort(mStream);
+		int len = readInt(mStream);
 		byte[] data = new byte[len];
 
 		mStream.read(data);
@@ -237,12 +237,12 @@ public abstract class Packet {
 	 *             the unsupported encoding exception
 	 */
 	public static byte[] getString(String string) throws UnsupportedEncodingException {
-		byte[] bytes = new byte[2 + string.length()];
-		byte[] shortBytes = getShort((short) string.length());
+		byte[] bytes = new byte[4 + string.length()];
+		byte[] shortBytes = getInt(string.length());
 		byte[] stringBytes = string.getBytes("ASCII");
 
 		System.arraycopy(shortBytes, 0, bytes, 0, shortBytes.length);
-		System.arraycopy(stringBytes, 0, bytes, 2, stringBytes.length);
+		System.arraycopy(stringBytes, 0, bytes, 4, stringBytes.length);
 
 		return bytes;
 	}

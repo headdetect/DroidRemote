@@ -19,12 +19,12 @@
  */
 package com.headdetect.computerremote;
 
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,13 +47,16 @@ import com.headdetect.computerremote.Utils.ServerUtils.DiscoverComputers;
 import com.headdetect.computerremote.chat.ChatClientActivity;
 import com.headdetect.computerremote.dialogs.ComputerOptionsDialog;
 import com.headdetect.computerremote.dialogs.ComputerOptionsDialog.ComputerOptionClickedListener;
+import com.headdetect.computerremote.dialogs.InputTextDialog;
+import com.headdetect.computerremote.dialogs.InputTextDialog.TextEnteredListener;
 import com.headdetect.computerremote.dialogs.PowerOptionsDialog;
 import com.headdetect.computerremote.dialogs.PowerOptionsDialog.PowerOptionsClickedListener;
+import com.headdetect.computerremote.dialogs.TextDialog;
 
 /**
  * The Class SelectComputerActivity.
  */
-public class SelectComputerActivity extends FragmentActivity implements ComputerOptionClickedListener, PowerOptionsClickedListener {
+public class SelectComputerActivity extends FragmentActivity implements ComputerOptionClickedListener, PowerOptionsClickedListener, TextEnteredListener {
 
 	// ===========================================================
 	// Constants
@@ -72,6 +75,8 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
 	private ProgressBar mProg;
 
 	private ComputerList mLoader;
+	
+	private Computer mSelectedComputer;
 
 	// ===========================================================
 	// Constructors
@@ -104,13 +109,15 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				mSelectedComputer = mAdapter.getItem(arg2);
+				
 				ServerUtils.stopSearch();
 
 				if (mLoader != null)
 					mLoader.cancel(false);
 
-				DialogFragment dialog = ComputerOptionsDialog.newInstance(SelectComputerActivity.this, mAdapter.getItem(arg2));
-				dialog.show(SelectComputerActivity.this.getFragmentManager(), "OptionsDialog");
+				DialogFragment dialog = ComputerOptionsDialog.newInstance(SelectComputerActivity.this, mSelectedComputer);
+				dialog.show(SelectComputerActivity.this.getSupportFragmentManager(), "OptionsDialog");
 			}
 		});
 
@@ -183,15 +190,13 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
 			case 2: //sleep
 				p.execute(comp.getIp().toString(), "rundll32.exe powrprof.dll,SetSuspendState 0,1,0");
 				break;
-			case 3: // Lock stuffs
+			case 3: // Log Off
+				p.execute(comp.getIp().toString(), "Shutdown.exe /l /f");
+				break;
+			case 4: // Lock dat ish
 				p.execute(comp.getIp().toString(), "rundll32.exe user32.dll, LockWorkStation");
 				break;
 		}
-
-		if (index == 3) {
-
-		}
-
 	}
 
 	@Override
@@ -201,8 +206,19 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
 		} else if (index == 1) {
 
 			DialogFragment dialog = PowerOptionsDialog.newInstance(this, comp);
-			dialog.show(getFragmentManager(), "PowerOptions");
+			dialog.show(this.getSupportFragmentManager(), "PowerOptions");
+		} else if (index == 2){
+			
+			DialogFragment dialog = InputTextDialog.newInstance(this, "Enter Command");
+			dialog.show(this.getSupportFragmentManager(), "TextInput");
+			
 		}
+	}
+	
+	@Override
+	public void onTextRecieved(String result) {
+		RunCommand cmd = new RunCommand();
+		cmd.execute(mSelectedComputer.getIp().toString(), result);
 	}
 
 	// ===========================================================
@@ -372,5 +388,43 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
 
 		}
 	}
+
+	private class RunCommand extends AsyncTask<String, Void, String> {
+
+		@Override
+		protected String doInBackground(String... arg0) {
+			
+			try {
+
+				CPClient mClient = CPClient.connect(arg0[0].substring(1, arg0[0].length()));
+				Packet.QuickSend(mClient.getSocket(), new PacketCommand(arg0[1]));
+				PacketCommand cmd = (PacketCommand) Packet.QuickRead(mClient.getSocket(), PacketCommand.ID);
+				mClient.disconnect();
+				
+				return cmd.getResult();
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+
+		}
+		
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+		 */
+		@Override
+		protected void onPostExecute(String s) {
+
+			if (s != null) {
+				TextDialog dialog = TextDialog.newInstance(s);
+				dialog.show(SelectComputerActivity.this.getSupportFragmentManager(), "TextDialog");
+			}
+
+
+		}
+	}
+
 
 }

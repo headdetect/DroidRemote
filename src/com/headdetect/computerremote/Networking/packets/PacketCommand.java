@@ -38,6 +38,8 @@ public class PacketCommand extends Packet {
 	
 	private String mCommand;
 
+	private String mResult;
+	
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -52,18 +54,27 @@ public class PacketCommand extends Packet {
 		
 		this.mCommand = command;
 	}
+	
+	public PacketCommand () {
+		super(ID);
+		
+	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+	
+	public String getResult(){
+		return mResult;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
 	@Override
-	public void loadFromStream(DataInputStream stream) throws IOException {
-		throw new IOException("Is a write only packet");
+	public void loadFromStream(DataInputStream mStream) throws IOException {
+		mResult = Packet.readString(mStream);
 	}
 
 	@Override

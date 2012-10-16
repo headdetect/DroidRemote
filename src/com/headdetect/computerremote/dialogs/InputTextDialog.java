@@ -3,18 +3,13 @@ package com.headdetect.computerremote.dialogs;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.widget.EditText;
 
-import com.headdetect.computerremote.R;
-import com.headdetect.computerremote.Utils.Computer;
-
-/**
- * Dialog interface for choosing options attached to a computer object. Activity
- * holding dialog must implement @see ComputerOptionClickedListener.
- */
-public class PowerOptionsDialog extends DialogFragment {
+public class InputTextDialog extends DialogFragment {
 
 	// ===========================================================
 	// Constants
@@ -24,10 +19,11 @@ public class PowerOptionsDialog extends DialogFragment {
 	// Fields
 	// ===========================================================
 
-	/** The computer. */
-	private Computer computer;
+	private String mTitle;
 
-	static PowerOptionsClickedListener mListener;
+	private Activity mAct;
+
+	static TextEnteredListener mListener;
 
 	// ===========================================================
 	// Constructors
@@ -49,17 +45,23 @@ public class PowerOptionsDialog extends DialogFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		final AlertDialog.Builder builder = new AlertDialog.Builder(
+				getActivity());
+		final EditText txtInput = new EditText(mAct);
 
-		builder.setTitle("Power Options");
+		builder.setTitle(mTitle);
+		builder.setView(txtInput);
+		builder.setPositiveButton("Ok", new OnClickListener() {
 
-		builder.setItems(R.array.power_options, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				if (mListener != null)
-					mListener.onPowerOptionClicked(which, computer);
-				
-				dismiss();
+
+				String text = txtInput.getText().toString();
+
+				if (mListener != null) {
+					mListener.onTextRecieved(text);
+				}
+
 			}
 		});
 
@@ -77,17 +79,19 @@ public class PowerOptionsDialog extends DialogFragment {
 	 *            the item
 	 * @return the dialog fragment
 	 */
-	public static PowerOptionsDialog newInstance(Activity act, Computer item) {
-		if (item == null)
-			throw new NullPointerException("Computer cannot be null");
+	public static InputTextDialog newInstance(Activity act, String title) {
+		if (act == null)
+			throw new NullPointerException("Activity cannot be null");
 
-		PowerOptionsDialog dialog = new PowerOptionsDialog();
-		dialog.computer = item;
+		InputTextDialog dialog = new InputTextDialog();
+		dialog.mTitle = title;
+		dialog.mAct = act;
 
 		try {
-			mListener = (PowerOptionsClickedListener) act;
+			mListener = (TextEnteredListener) act;
 		} catch (ClassCastException e) {
-			throw new ClassCastException(act.toString() + " must implement PowerOptionsClickedListener");
+			throw new ClassCastException(act.toString()
+					+ " must implement TextEnteredListener");
 		}
 
 		return dialog;
@@ -100,12 +104,11 @@ public class PowerOptionsDialog extends DialogFragment {
 	/**
 	 * The listener interface for receiving the dialog click events. The class
 	 * that is interested in processing a computerOptionClicked event implements
-	 * this interface. When
-	 * the computerOptionClicked event occurs, that object's appropriate
-	 * method is invoked.
+	 * this interface. When the computerOptionClicked event occurs, that
+	 * object's appropriate method is invoked.
 	 * 
 	 */
-	public interface PowerOptionsClickedListener {
+	public interface TextEnteredListener {
 
 		/**
 		 * On option clicked.
@@ -115,8 +118,7 @@ public class PowerOptionsDialog extends DialogFragment {
 		 * @param comp
 		 *            the computer
 		 */
-		public void onPowerOptionClicked(int index, Computer comp);
+		public void onTextRecieved(String result);
 	}
+
 }
-
-

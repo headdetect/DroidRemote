@@ -101,7 +101,7 @@ public class ChatClientActivity extends Activity {
 		btnSendMessage.setOnClickListener(btnSendMessageClickListener);
 
 		ChatClient.setOnChatListener(chatListener);
-		ChatClient.setOnConnectionListener(connectionListener);
+		Client.setOnConnectionListener(connectionListener);
 
 		final Intent intent = getIntent();
 
