@@ -65,7 +65,7 @@ public class ChatClientActivity extends Activity {
 
 	private ListView lstMessages;
 
-	private Client mClient;
+	private ChatClient mClient;
 
 	// ===========================================================
 	// Constructors
@@ -100,8 +100,8 @@ public class ChatClientActivity extends Activity {
 		btnSendMessage = (Button) findViewById(R.id.btnSend);
 		btnSendMessage.setOnClickListener(btnSendMessageClickListener);
 
-		Client.setOnChatListener(chatListener);
-		Client.setOnConnectionListener(connectionListener);
+		ChatClient.setOnChatListener(chatListener);
+		ChatClient.setOnConnectionListener(connectionListener);
 
 		final Intent intent = getIntent();
 
@@ -210,7 +210,7 @@ public class ChatClientActivity extends Activity {
 
 			try {
 
-				mClient = Client.connect(arg0[0].substring(1, arg0[0].length()));
+				mClient = ChatClient.connect(arg0[0].substring(1, arg0[0].length()));
 				if (mClient != null) {
 					new Thread(mClient).run();
 				}

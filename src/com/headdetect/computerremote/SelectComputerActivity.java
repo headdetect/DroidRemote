@@ -19,12 +19,13 @@
  */
 package com.headdetect.computerremote;
 
-import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,30 +38,37 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.headdetect.computerremote.Networking.CPClient;
+import com.headdetect.computerremote.Networking.Packet;
+import com.headdetect.computerremote.Networking.packets.PacketCommand;
 import com.headdetect.computerremote.Utils.Computer;
 import com.headdetect.computerremote.Utils.ServerUtils;
 import com.headdetect.computerremote.Utils.ServerUtils.DiscoverComputers;
 import com.headdetect.computerremote.chat.ChatClientActivity;
+import com.headdetect.computerremote.dialogs.ComputerOptionsDialog;
+import com.headdetect.computerremote.dialogs.ComputerOptionsDialog.ComputerOptionClickedListener;
+import com.headdetect.computerremote.dialogs.PowerOptionsDialog;
+import com.headdetect.computerremote.dialogs.PowerOptionsDialog.PowerOptionsClickedListener;
 
 /**
  * The Class SelectComputerActivity.
  */
-public class SelectComputerActivity extends Activity {
-	
+public class SelectComputerActivity extends FragmentActivity implements ComputerOptionClickedListener, PowerOptionsClickedListener {
+
 	// ===========================================================
 	// Constants
 	// ===========================================================
-	
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	private ListView mList;
-	
+
 	private ArrayAdapter<Computer> mAdapter;
 
 	private TextView mLabel;
-	
+
 	private ProgressBar mProg;
 
 	private ComputerList mLoader;
@@ -76,26 +84,33 @@ public class SelectComputerActivity extends Activity {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
+
 	/**
 	 * On create.
-	 *
-	 * @param savedInstanceState the saved instance state
+	 * 
+	 * @param savedInstanceState
+	 *            the saved instance state
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_computer_browser);
-		
+
 		mAdapter = new ArrayAdapter<Computer>(this, android.R.layout.simple_list_item_1);
-		
+
 		mList = (ListView) findViewById(R.id.lstComputers);
 		mList.setAdapter(mAdapter);
 		mList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				connect(mAdapter.getItem(arg2));
+				ServerUtils.stopSearch();
+
+				if (mLoader != null)
+					mLoader.cancel(false);
+
+				DialogFragment dialog = ComputerOptionsDialog.newInstance(SelectComputerActivity.this, mAdapter.getItem(arg2));
+				dialog.show(SelectComputerActivity.this.getFragmentManager(), "OptionsDialog");
 			}
 		});
 
@@ -106,11 +121,12 @@ public class SelectComputerActivity extends Activity {
 		mLoader.execute();
 
 	}
-	
+
 	/**
 	 * On create options menu.
-	 *
-	 * @param menu the menu
+	 * 
+	 * @param menu
+	 *            the menu
 	 * @return true, if successful
 	 */
 	@Override
@@ -122,17 +138,18 @@ public class SelectComputerActivity extends Activity {
 
 	/**
 	 * On options item selected.
-	 *
-	 * @param item the item
+	 * 
+	 * @param item
+	 *            the item
 	 * @return true, if successful
 	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.itmManual:
-				
-				//TODO: Dialog, then manual connectivity.
-				
+
+				// TODO: Dialog, then manual connectivity.
+
 				return true;
 			case R.id.itmRefresh:
 				if (mProg.getVisibility() == View.VISIBLE)
@@ -152,29 +169,63 @@ public class SelectComputerActivity extends Activity {
 		}
 	}
 
+	@Override
+	public void onPowerOptionClicked(int index, Computer comp) {
+		ConnectForPower p = new ConnectForPower();
+		
+		switch (index) {
+			case 0: //shutdown
+				p.execute(comp.getIp().toString(), "Shutdown.exe -s -t 09");
+				break;
+			case 1: //restart
+				p.execute(comp.getIp().toString(), "Shutdown.exe -r -t 09");
+				break;
+			case 2: //sleep
+				p.execute(comp.getIp().toString(), "rundll32.exe powrprof.dll,SetSuspendState 0,1,0");
+				break;
+			case 3: // Lock stuffs
+				p.execute(comp.getIp().toString(), "rundll32.exe user32.dll, LockWorkStation");
+				break;
+		}
+
+		if (index == 3) {
+
+		}
+
+	}
+
+	@Override
+	public void onComputerOptionClicked(int index, Computer comp) {
+		if (index == 0) {
+			connectForChat(comp);
+		} else if (index == 1) {
+
+			DialogFragment dialog = PowerOptionsDialog.newInstance(this, comp);
+			dialog.show(getFragmentManager(), "PowerOptions");
+		}
+	}
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
+
 	/**
 	 * Connect to the specified computer
-	 *
-	 * @param item
-	 *            the computer to connect to
+	 * 
 	 */
-	public void connect(Computer item) {
-		
+	public void connectForChat(Computer comp) {
+
+		if (comp == null)
+			return;
+
 		try {
 
-			ServerUtils.stopSearch();
-			mLoader.cancel(true);
-
 			Intent sillyIntent = new Intent(SelectComputerActivity.this, ChatClientActivity.class);
-			sillyIntent.putExtra("IP", item.getIp().toString());
+			sillyIntent.putExtra("IP", comp.getIp().toString());
 			startActivity(sillyIntent);
-			
+
 			finish();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			makeToast("Error connecting to computer");
@@ -182,9 +233,11 @@ public class SelectComputerActivity extends Activity {
 	}
 
 	/**
-	 * A quick method to show a toast notification. All toasts are shown for Toast.LENGTH_LONG
+	 * A quick method to show a toast notification. All toasts are shown for
+	 * Toast.LENGTH_LONG
+	 * 
 	 * @param message
-	 *               The message to show
+	 *            The message to show
 	 */
 	public void makeToast(final String message) {
 		runOnUiThread(new Runnable() {
@@ -205,7 +258,9 @@ public class SelectComputerActivity extends Activity {
 	 */
 	private class ComputerList extends AsyncTask<Void, Void, Void> {
 
-		/* (non-Javadoc)
+		/*
+		 * (non-Javadoc)
+		 * 
 		 * @see android.os.AsyncTask#doInBackground(Params[])
 		 */
 		@Override
@@ -218,36 +273,38 @@ public class SelectComputerActivity extends Activity {
 				return null;
 			}
 
-			ServerUtils.setListener( new DiscoverComputers() {
+			ServerUtils.setListener(new DiscoverComputers() {
 
 				@Override
 				public void OnDiscover(final Computer c) {
-					
+
 					for (int i = 0; i < mAdapter.getCount(); i++) {
 						if (c.getName().equals(mAdapter.getItem(i).getName())) {
 							return;
 						}
 					}
-					
+
 					SelectComputerActivity.this.runOnUiThread(new Runnable() {
 
 						@Override
 						public void run() {
-							
+
 							mAdapter.add(c);
-							
+
 						}
-						
+
 					});
 
 				}
-			} );
+			});
 			ServerUtils.getComputersOnNetwork();
 
 			return null;
 		}
 
-		/* (non-Javadoc)
+		/*
+		 * (non-Javadoc)
+		 * 
 		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
 		 */
 		@Override
@@ -257,14 +314,63 @@ public class SelectComputerActivity extends Activity {
 			mProg.setVisibility(View.GONE);
 		}
 
-		/* (non-Javadoc)
+		/*
+		 * (non-Javadoc)
+		 * 
 		 * @see android.os.AsyncTask#onCancelled()
 		 */
 		@Override
 		protected void onCancelled() {
+			mLabel.setVisibility(View.GONE);
+			mProg.setVisibility(View.GONE);
+
 			ServerUtils.stopSearch();
 		}
 	}
 
-	
+	/**
+	 * The Class SetupChat.
+	 */
+	private class ConnectForPower extends AsyncTask<String, Void, Boolean> {
+
+		
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.os.AsyncTask#doInBackground(Params[])
+		 */
+		@Override
+		protected Boolean doInBackground(String... arg0) {
+
+			try {
+
+				CPClient mClient = CPClient.connect(arg0[0].substring(1, arg0[0].length()));
+				Packet.QuickSend(mClient.getSocket(), new PacketCommand(arg0[1]));
+				mClient.disconnect();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				return true;
+			}
+
+			return false;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+		 */
+		@Override
+		protected void onPostExecute(Boolean errors) {
+
+			if (errors) {
+				Toast.makeText(getApplicationContext(), "Something went wrong while trying to connect", Toast.LENGTH_LONG).show();
+			}
+
+
+		}
+	}
+
 }

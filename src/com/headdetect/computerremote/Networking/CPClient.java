@@ -17,18 +17,21 @@
  *	permissions and limitations under the Licenses.
  * 
  */
-
 package com.headdetect.computerremote.Networking;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
-import com.headdetect.computerremote.chat.Listeners.ConnectionListener;
+import com.headdetect.computerremote.Networking.packets.PacketCommand;
 
 /**
- * The Class Client.
+ * The Class CPClient.
  */
-public abstract class Client implements Runnable {
+public class CPClient extends Client {
+
+
 
 	// ===========================================================
 	// Constants
@@ -38,127 +41,80 @@ public abstract class Client implements Runnable {
 	// Fields
 	// ===========================================================
 
-	protected PacketQue mPacketQueue;
-
-	/** The disconnecting. */
-	protected boolean disconnecting;
-
-	/** The connection listener. */
-	private static ConnectionListener connectionListener;
-	
-	private Socket mSocket;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
+	
 	/**
-	 * Instantiates a new client.
-	 * 
-	 * @param s
-	 *            the socket
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 * Instantiates a new Control Panel type client.
+	 *
+	 * @param s the socket it connects from
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	public Client(Socket s) throws IOException {
-		this.mSocket = s;
-		
-		try {
-			mPacketQueue = new PacketQue(s);
-		} catch (IOException e) {
-			disconnect();
-			return;
-		}
-
+	public CPClient(Socket s) throws IOException {
+		super(s);
 	}
-
+	
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
-	/**
-	 * Gets the socket.
-	 *
-	 * @return the socket
-	 */
-	public Socket getSocket(){
-		return mSocket;
-	}
-
-	/**
-	 * Sets the connection listener.
-	 * 
-	 * @param listener
-	 *            the new on connection listener
-	 */
-	public static void setOnConnectionListener(ConnectionListener listener) {
-		connectionListener = listener;
-	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Runnable#run()
+	
+	/* (non-Javadoc)
+	 * @see com.headdetect.computerremote.Networking.Client#onRecievePacket(com.headdetect.computerremote.Networking.Packet)
 	 */
 	@Override
-	public void run() {
-		if (connectionListener != null) {
-			connectionListener.onJoin(this);
-		}
+	protected void onRecievePacket(Packet packet) {
+		// TODO Auto-generated method stub
 
-		try {
-
-			while (!disconnecting) {
-
-				Packet pack = mPacketQueue.getNextPacket();
-				if (pack == null) {
-					Thread.sleep(100);
-					continue;
-				}
-
-				onRecievePacket(pack);
-				
-			}
-
-		} catch (IOException e) {
-			disconnect();
-		} catch (Exception e) {
-			e.printStackTrace();
-			disconnect();
-		}
 	}
-	
-	protected abstract void onRecievePacket(Packet packet);
 	
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
-
+	
 	/**
-	 * Disconnects the client.
+	 * Connect to the specified address, and returns a client.
+	 * 
+	 * @param address
+	 *            the address
+	 * @return the connected client
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
-	public void disconnect() {
+	public static CPClient connect(String address) throws IOException {
+		InetAddress localAddress = InetAddress.getByName(address);
+		InetSocketAddress localSocketAddress = new InetSocketAddress(localAddress, 45903);
 
-		if (connectionListener != null) {
-			connectionListener.onDisconnect(this);
-		}
+		Socket socket = new Socket();
+		socket.connect(localSocketAddress, 5000);
+		CPClient client = new CPClient(socket);
 
-		mPacketQueue.close();
-		try {
-			mSocket.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		return client;
+	}
+	
+	/**
+	 * Send a command.
+	 * 
+	 * @param message
+	 *            the message
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws Exception
+	 *             the exception
+	 */
+	public void sendCommand(String cmd) throws IOException, Exception {
+		if (cmd == null || cmd.isEmpty() || !mPacketQueue.isRunning())
+			return;
+
+		mPacketQueue.sendPacket(new PacketCommand(cmd));
 	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
 }
