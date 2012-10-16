@@ -37,10 +37,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.headdetect.chat.ChatClientActivity;
 import com.headdetect.computerremote.Utils.Computer;
 import com.headdetect.computerremote.Utils.ServerUtils;
 import com.headdetect.computerremote.Utils.ServerUtils.DiscoverComputers;
+import com.headdetect.computerremote.chat.ChatClientActivity;
 
 /**
  * The Class SelectComputerActivity.

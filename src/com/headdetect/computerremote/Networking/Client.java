@@ -18,18 +18,16 @@
  * 
  */
 
-package com.headdetect.chat.Networking;
+package com.headdetect.computerremote.Networking;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-import com.headdetect.chat.Listeners.ChatListener;
-import com.headdetect.chat.Listeners.ConnectionListener;
-import com.headdetect.computerremote.Networking.Packet;
-import com.headdetect.computerremote.Networking.PacketQue;
 import com.headdetect.computerremote.Networking.packets.PacketMessage;
+import com.headdetect.computerremote.chat.Listeners.ChatListener;
+import com.headdetect.computerremote.chat.Listeners.ConnectionListener;
 
 /**
  * The Class Client.
@@ -195,7 +193,7 @@ public class Client implements Runnable {
 	 *             the exception
 	 */
 	public void sendMessage(String message) throws IOException, Exception {
-		if (message == null || message.isEmpty())
+		if (message == null || message.isEmpty() || !mPacketQueue.isRunning())
 			return;
 
 		mPacketQueue.sendPacket(new PacketMessage(message));

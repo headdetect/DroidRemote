@@ -46,7 +46,7 @@ public class PacketQue {
 
 	private PacketWriter packetWriter;
 
-	private Exception error;
+	private Exception error;	
 
 	// ===========================================================
 	// Constructors
@@ -143,6 +143,10 @@ public class PacketQue {
 	 */
 	public void close() {
 		running = false;
+	}
+	
+	public boolean isRunning() {
+		return running;
 	}
 
 	// ===========================================================

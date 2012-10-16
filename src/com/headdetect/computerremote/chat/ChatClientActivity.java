@@ -18,7 +18,7 @@
  * 
  */
 
-package com.headdetect.chat;
+package com.headdetect.computerremote.chat;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,10 +38,11 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-import com.headdetect.chat.Listeners.ChatListener;
-import com.headdetect.chat.Listeners.ConnectionListener;
-import com.headdetect.chat.Networking.Client;
 import com.headdetect.computerremote.R;
+import com.headdetect.computerremote.Networking.Client;
+import com.headdetect.computerremote.chat.ChatItem.FloatDirection;
+import com.headdetect.computerremote.chat.Listeners.ChatListener;
+import com.headdetect.computerremote.chat.Listeners.ConnectionListener;
 
 /**
  * The Class ChatClientActivity.
@@ -144,7 +145,7 @@ public class ChatClientActivity extends Activity {
 
 		@Override
 		public void onChat(String message) {
-			chatAdapter.addItem(new ChatItem("<html>" + message + "</html>", "Friend"));
+			chatAdapter.addItem(new ChatItem("<html>" + message + "</html>", "Computer", FloatDirection.Right));
 		}
 	};
 
@@ -153,12 +154,12 @@ public class ChatClientActivity extends Activity {
 
 		@Override
 		public void onDisconnect(Client client) {
-			chatAdapter.addItem(new ChatItem(client.getName() + " left the chat room", ""));
+			chatAdapter.addItem(new ChatItem("<html><i>You disconnected from the computer.</i></html>", ""));
 		}
 
 		@Override
 		public void onJoin(Client client) {
-			chatAdapter.addItem(new ChatItem(client.getName() + " joined the chat room", ""));
+			chatAdapter.addItem(new ChatItem("<html><i>You connected to the computer.</i></html>", ""));
 		}
 	};
 

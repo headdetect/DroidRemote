@@ -16,12 +16,12 @@
         android:layout_alignParentTop="true"
         android:background="@color/Light_Gray"
         android:orientation="vertical" >
-
-
+
         <ListView
             android:id="@+id/lstChat"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:transcriptMode="alwaysScroll" >
 
         </ListView>
 

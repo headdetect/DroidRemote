@@ -13,29 +13,13 @@
         android:text="@string/empty"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/Black" />
-
-    <LinearLayout
+
+    <TextView
+        android:id="@+id/lblDate"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/lblMessageFrom"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/empty"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/Dark_Gray" />
-
-        <TextView
-            android:id="@+id/lblDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:text="@string/empty"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/Dark_Gray" />
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:text="@string/empty"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/light_gray" />
 
 </LinearLayout>
