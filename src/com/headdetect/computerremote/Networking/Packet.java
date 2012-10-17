@@ -198,7 +198,7 @@ public abstract class Packet {
 
 		mStream.read(data);
 
-		return new String(data, "ASCII");
+		return new String(data, "UTF8");
 	}
 
 	/**
@@ -239,7 +239,7 @@ public abstract class Packet {
 	public static byte[] getString(String string) throws UnsupportedEncodingException {
 		byte[] bytes = new byte[4 + string.length()];
 		byte[] shortBytes = getInt(string.length());
-		byte[] stringBytes = string.getBytes("ASCII");
+		byte[] stringBytes = string.getBytes("UTF8");
 
 		System.arraycopy(shortBytes, 0, bytes, 0, shortBytes.length);
 		System.arraycopy(stringBytes, 0, bytes, 4, stringBytes.length);

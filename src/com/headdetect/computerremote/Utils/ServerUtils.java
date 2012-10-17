@@ -114,7 +114,7 @@ public class ServerUtils {
 				ms.receive(dp);
 				byte[] data = dp.getData();
 
-				String concat = new String(data, "ASCII").trim();
+				String concat = new String(data, "UTF8").trim();
 
 				mListener.OnDiscover(new Computer(concat, ((InetSocketAddress) dp.getSocketAddress()).getAddress()));
 			}
