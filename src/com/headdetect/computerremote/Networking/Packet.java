@@ -28,6 +28,7 @@ import java.nio.ByteBuffer;
 
 import android.util.SparseArray;
 
+import com.headdetect.computerremote.Networking.packets.PacketBeep;
 import com.headdetect.computerremote.Networking.packets.PacketCommand;
 import com.headdetect.computerremote.Networking.packets.PacketMessage;
 import com.headdetect.computerremote.Utils.ByteSwapper;
@@ -59,6 +60,7 @@ public abstract class Packet {
 		packetMap = new SparseArray<Class<? extends Packet>>();
 		registerPacket(0x04, PacketMessage.class);
 		registerPacket(0x05, PacketCommand.class);
+		registerPacket(0x06, PacketBeep.class);
 	}
 
 	/**

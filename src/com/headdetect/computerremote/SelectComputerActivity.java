@@ -40,6 +40,7 @@ import android.widget.Toast;
 
 import com.headdetect.computerremote.Networking.CPClient;
 import com.headdetect.computerremote.Networking.Packet;
+import com.headdetect.computerremote.Networking.packets.PacketBeep;
 import com.headdetect.computerremote.Networking.packets.PacketCommand;
 import com.headdetect.computerremote.Utils.Computer;
 import com.headdetect.computerremote.Utils.ServerUtils;
@@ -56,7 +57,9 @@ import com.headdetect.computerremote.dialogs.TextDialog;
 /**
  * The Class SelectComputerActivity.
  */
-public class SelectComputerActivity extends FragmentActivity implements ComputerOptionClickedListener, PowerOptionsClickedListener, TextEnteredListener {
+public class SelectComputerActivity extends FragmentActivity implements
+		ComputerOptionClickedListener, PowerOptionsClickedListener,
+		TextEnteredListener {
 
 	// ===========================================================
 	// Constants
@@ -75,7 +78,7 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
 	private ProgressBar mProg;
 
 	private ComputerList mLoader;
-	
+
 	private Computer mSelectedComputer;
 
 	// ===========================================================
@@ -101,23 +104,28 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_computer_browser);
 
-		mAdapter = new ArrayAdapter<Computer>(this, android.R.layout.simple_list_item_1);
+		mAdapter = new ArrayAdapter<Computer>(this,
+				android.R.layout.simple_list_item_1);
 
 		mList = (ListView) findViewById(R.id.lstComputers);
 		mList.setAdapter(mAdapter);
 		mList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
 				mSelectedComputer = mAdapter.getItem(arg2);
-				
+
 				ServerUtils.stopSearch();
 
 				if (mLoader != null)
 					mLoader.cancel(false);
 
-				DialogFragment dialog = ComputerOptionsDialog.newInstance(SelectComputerActivity.this, mSelectedComputer);
-				dialog.show(SelectComputerActivity.this.getSupportFragmentManager(), "OptionsDialog");
+				DialogFragment dialog = ComputerOptionsDialog.newInstance(
+						SelectComputerActivity.this, mSelectedComputer);
+				dialog.show(
+						SelectComputerActivity.this.getSupportFragmentManager(),
+						"OptionsDialog");
 			}
 		});
 
@@ -153,49 +161,51 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.itmManual:
+		case R.id.itmManual:
 
-				// TODO: Dialog, then manual connectivity.
+			// TODO: Dialog, then manual connectivity.
 
+			return true;
+		case R.id.itmRefresh:
+			if (mProg.getVisibility() == View.VISIBLE)
 				return true;
-			case R.id.itmRefresh:
-				if (mProg.getVisibility() == View.VISIBLE)
-					return true;
-				mLabel.setText("Looking for servers...");
-				mProg.setVisibility(View.VISIBLE);
-				mAdapter.clear();
+			mLabel.setText("Looking for servers...");
+			mProg.setVisibility(View.VISIBLE);
+			mAdapter.clear();
 
-				if (mLoader != null) {
-					mLoader.cancel(true);
-				}
-				mLoader = new ComputerList();
-				mLoader.execute();
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
+			if (mLoader != null) {
+				mLoader.cancel(true);
+			}
+			mLoader = new ComputerList();
+			mLoader.execute();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 
 	@Override
 	public void onPowerOptionClicked(int index, Computer comp) {
 		ConnectForPower p = new ConnectForPower();
-		
+
 		switch (index) {
-			case 0: //shutdown
-				p.execute(comp.getIp().toString(), "Shutdown.exe -s -t 09");
-				break;
-			case 1: //restart
-				p.execute(comp.getIp().toString(), "Shutdown.exe -r -t 09");
-				break;
-			case 2: //sleep
-				p.execute(comp.getIp().toString(), "rundll32.exe powrprof.dll,SetSuspendState 0,1,0");
-				break;
-			case 3: // Log Off
-				p.execute(comp.getIp().toString(), "Shutdown.exe /l /f");
-				break;
-			case 4: // Lock dat ish
-				p.execute(comp.getIp().toString(), "rundll32.exe user32.dll, LockWorkStation");
-				break;
+		case 0: // shutdown
+			p.execute(comp.getIp().toString(), "Shutdown.exe -s -t 09");
+			break;
+		case 1: // restart
+			p.execute(comp.getIp().toString(), "Shutdown.exe -r -t 09");
+			break;
+		case 2: // sleep
+			p.execute(comp.getIp().toString(),
+					"rundll32.exe powrprof.dll,SetSuspendState 0,1,0");
+			break;
+		case 3: // Log Off
+			p.execute(comp.getIp().toString(), "Shutdown.exe /l /f");
+			break;
+		case 4: // Lock dat ish
+			p.execute(comp.getIp().toString(),
+					"rundll32.exe user32.dll, LockWorkStation");
+			break;
 		}
 	}
 
@@ -207,14 +217,18 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
 
 			DialogFragment dialog = PowerOptionsDialog.newInstance(this, comp);
 			dialog.show(this.getSupportFragmentManager(), "PowerOptions");
-		} else if (index == 2){
-			
-			DialogFragment dialog = InputTextDialog.newInstance(this, "Enter Command");
+		} else if (index == 2) {
+
+			DialogFragment dialog = InputTextDialog.newInstance(this,
+					"Enter Command");
 			dialog.show(this.getSupportFragmentManager(), "TextInput");
-			
+
+		} else if (index == 3) {
+			Beeper beep = new Beeper();
+			beep.execute(comp.getIp().toString());
 		}
 	}
-	
+
 	@Override
 	public void onTextRecieved(String result) {
 		RunCommand cmd = new RunCommand();
@@ -236,7 +250,8 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
 
 		try {
 
-			Intent sillyIntent = new Intent(SelectComputerActivity.this, ChatClientActivity.class);
+			Intent sillyIntent = new Intent(SelectComputerActivity.this,
+					ChatClientActivity.class);
 			sillyIntent.putExtra("IP", comp.getIp().toString());
 			startActivity(sillyIntent);
 
@@ -260,7 +275,8 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
 
 			@Override
 			public void run() {
-				Toast.makeText(SelectComputerActivity.this, message, Toast.LENGTH_LONG).show();
+				Toast.makeText(SelectComputerActivity.this, message,
+						Toast.LENGTH_LONG).show();
 			}
 		});
 	}
@@ -282,7 +298,8 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
 		@Override
 		protected Void doInBackground(Void... arg0) {
 
-			WifiManager mWifi = (WifiManager) SelectComputerActivity.this.getSystemService(Context.WIFI_SERVICE);
+			WifiManager mWifi = (WifiManager) SelectComputerActivity.this
+					.getSystemService(Context.WIFI_SERVICE);
 
 			if (!mWifi.isWifiEnabled()) {
 				makeToast("Wifi must be enabled!");
@@ -349,8 +366,6 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
 	 */
 	private class ConnectForPower extends AsyncTask<String, Void, Boolean> {
 
-		
-
 		/*
 		 * (non-Javadoc)
 		 * 
@@ -361,10 +376,12 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
 
 			try {
 
-				CPClient mClient = CPClient.connect(arg0[0].substring(1, arg0[0].length()));
-				Packet.QuickSend(mClient.getSocket(), new PacketCommand(arg0[1]));
+				CPClient mClient = CPClient.connect(arg0[0].substring(1,
+						arg0[0].length()));
+				Packet.QuickSend(mClient.getSocket(),
+						new PacketCommand(arg0[1]));
 				mClient.disconnect();
-				
+
 			} catch (Exception e) {
 				e.printStackTrace();
 				return true;
@@ -382,9 +399,10 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
 		protected void onPostExecute(Boolean errors) {
 
 			if (errors) {
-				Toast.makeText(getApplicationContext(), "Something went wrong while trying to connect", Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(),
+						"Something went wrong while trying to connect",
+						Toast.LENGTH_LONG).show();
 			}
-
 
 		}
 	}
@@ -393,14 +411,17 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
 
 		@Override
 		protected String doInBackground(String... arg0) {
-			
+
 			try {
 
-				CPClient mClient = CPClient.connect(arg0[0].substring(1, arg0[0].length()));
-				Packet.QuickSend(mClient.getSocket(), new PacketCommand(arg0[1]));
-				PacketCommand cmd = (PacketCommand) Packet.QuickRead(mClient.getSocket(), PacketCommand.ID);
+				CPClient mClient = CPClient.connect(arg0[0].substring(1,
+						arg0[0].length()));
+				Packet.QuickSend(mClient.getSocket(),
+						new PacketCommand(arg0[1]));
+				PacketCommand cmd = (PacketCommand) Packet.QuickRead(
+						mClient.getSocket(), PacketCommand.ID);
 				mClient.disconnect();
-				
+
 				return cmd.getResult();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -408,7 +429,7 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
 			}
 
 		}
-		
+
 		/*
 		 * (non-Javadoc)
 		 * 
@@ -419,12 +440,33 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
 
 			if (s != null) {
 				TextDialog dialog = TextDialog.newInstance(s);
-				dialog.show(SelectComputerActivity.this.getSupportFragmentManager(), "TextDialog");
+				dialog.show(
+						SelectComputerActivity.this.getSupportFragmentManager(),
+						"TextDialog");
 			}
-
 
 		}
 	}
 
+	private class Beeper extends AsyncTask<String, Void, Void> {
+
+		@Override
+		protected Void doInBackground(String... arg0) {
+
+			try {
+
+				CPClient mClient = CPClient.connect(arg0[0].substring(1,
+						arg0[0].length()));
+				Packet.QuickSend(mClient.getSocket(), new PacketBeep());
+				mClient.disconnect();
+
+			} catch (Exception e) {
+				e.printStackTrace();
+
+			}
+			
+			return null;
+		}
+	}
 
 }
