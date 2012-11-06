@@ -1,6 +1,6 @@
 /*
 
-﻿ *    Copyright 2012 Brayden (headdetect) Lopez
+﻿ *    Copyright 2012 Brayden (headdetect)
  *    
  *    Dual-licensed under the Educational Community License, Version 2.0 and
  *	the GNU General Public License Version 3 (the "Licenses"); you may
@@ -17,38 +17,70 @@
  *	permissions and limitations under the Licenses.
  * 
  */
-package com.headdetect.chat.Utilities;
+package com.headdetect.computerremote.Networking.packets;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class Constants.
- */
-public class Constants {
+import java.io.DataInputStream;
+import java.io.IOException;
+
+import com.headdetect.computerremote.Networking.Packet;
+
+public class PacketCommand extends Packet {
+
 	// ===========================================================
 	// Constants
 	// ===========================================================
 
-	/** The Constant PORT. */
-	public static final int PORT = 45903;
-	
-	/** The Constant MAX_USERS. */
-	public static final int MAX_USERS = 1;
-	
+	public static final int ID = 0x05;
+
 	// ===========================================================
 	// Fields
 	// ===========================================================
+	
+	private String mCommand;
 
+	private String mResult;
+	
 	// ===========================================================
 	// Constructors
 	// ===========================================================
+	
+	/**
+	 * Instantiates a new packet command.
+	 *
+	 * @param command the command to send
+	 */
+	public PacketCommand(String command) {
+		super(ID);
+		
+		this.mCommand = command;
+	}
+	
+	public PacketCommand () {
+		super(ID);
+		
+	}
 
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
+	
+	public String getResult(){
+		return mResult;
+	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+
+	@Override
+	public void loadFromStream(DataInputStream mStream) throws IOException {
+		mResult = Packet.readString(mStream);
+	}
+
+	@Override
+	public byte[] writeData() throws IOException {
+		return Packet.getString(mCommand);
+	}
 
 	// ===========================================================
 	// Methods
@@ -58,5 +90,3 @@ public class Constants {
 	// Inner and Anonymous Classes
 	// ===========================================================
 }
-
-

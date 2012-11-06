@@ -17,28 +17,27 @@
  *	permissions and limitations under the Licenses.
  * 
  */
-package com.headdetect.chat;
+package com.headdetect.computerremote.chat;
 
 import java.util.ArrayList;
 
-import com.headdetect.computerremote.R;
-
 import android.app.Activity;
 import android.text.Html;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-// TODO: Auto-generated Javadoc
+import com.headdetect.computerremote.R;
+import com.headdetect.computerremote.chat.ChatItem.FloatDirection;
+
 /**
  * The Class ChatListAdapter.
  */
 public class ChatListAdapter extends BaseAdapter {
 
-	
-	
 
 	// ===========================================================
 	// Constants
@@ -89,18 +88,24 @@ public class ChatListAdapter extends BaseAdapter {
 	@Override 
 	public View getView(final int i, View covertView, final ViewGroup parent){
 		if(covertView == null){
-			covertView = this.inflater.inflate(R.layout.chat_item_ics, null);
+			covertView = this.inflater.inflate(R.layout.comp_chat_item, null);
 		}
 		
 		ChatItem chat = items.get(i);
 		
 		TextView lblMessage = (TextView)covertView.findViewById(R.id.lblChatContents);
-		TextView lblFrom = (TextView)covertView.findViewById(R.id.lblMessageFrom);
 		TextView lblDate = (TextView)covertView.findViewById(R.id.lblDate);
 		
 		lblMessage.setText(Html.fromHtml(chat.getMessage()));
-		lblFrom.setText(chat.getName());
 		lblDate.setText(chat.getDate());
+		
+		if(chat.getFloatDirection() == FloatDirection.Right){
+			lblMessage.setGravity(Gravity.RIGHT);
+			lblDate.setGravity(Gravity.RIGHT);
+		} else {
+			lblMessage.setGravity(Gravity.LEFT);
+			lblDate.setGravity(Gravity.LEFT);
+		}
 		
 		return covertView;
 	}
@@ -170,12 +175,12 @@ public class ChatListAdapter extends BaseAdapter {
 		this.activity.runOnUiThread(updateDataSetChanged);
 	}
 	
-	/** The update data set changed. */
 	private final Runnable updateDataSetChanged = new Runnable(){
 
 		@Override
 		public void run() {
 			notifyDataSetChanged();
+			
 		}
 		
 	};

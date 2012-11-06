@@ -17,34 +17,28 @@
  *	permissions and limitations under the Licenses.
  * 
  */
+package com.headdetect.computerremote.Utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
-package com.headdetect.chat.Utilities;
-
-import com.headdetect.computerremote.BuildConfig;
-
-// TODO: Auto-generated Javadoc
 /**
- * The Class Logger.
+ * The Class DateUtils.
  */
-public class Logger {
-	
+public class DateUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
+
+	/** The Constant DATE_FORMAT_NOW_FULL. */
+	public static final String DATE_FORMAT_NOW_FULL = "yyyy-MM-dd HH:mm:ss";
 	
-	/** The Constant TAG. */
-	private static final String TAG = "Chat Client";
+	/** The Constant DATE_FORMAT_NOW_SHORT. */
+	public static final String DATE_FORMAT_NOW_SHORT = "EEE d, HH:mm";
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
-	
-	/** The log listener. */
-	private static LogListener logListener;
-	
-	
 
 	// ===========================================================
 	// Constructors
@@ -53,15 +47,6 @@ public class Logger {
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
-	
-	/**
-	 * Sets the log listener.
-	 *
-	 * @param listener the new on log listener
-	 */
-	public static void setLogListener(LogListener listener){
-		Logger.logListener = listener;
-	}
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -70,67 +55,29 @@ public class Logger {
 	// ===========================================================
 	// Methods
 	// ===========================================================
-	
-	/**
-	 * Logs a message.
-	 *
-	 * @param message the message
-	 */
-	public static void Log(String message){
-		if(logListener != null){
-			logListener.OnLog(message);
-		}
-		
-		android.util.Log.d(TAG, message);
-	}
-	
-	/**
-	 * Log a message using a String format method.
-	 *
-	 * @param format the format
-	 * @param args the args
-	 */
-	public static void LogF(String format, Object... args){
-		Log(String.format(format, args));
-	}
 
 	/**
-	 * if BuildConfig.Debug is enabled, a message will be logged.
+	 * The the current date and time.
 	 *
-	 * @param message the message
+	 * @return The the current date and time.
 	 */
-	public static void LogDebug(String message){
-		if(!BuildConfig.DEBUG)
-			return;
-		
-		Log(message);
+	public static String now() {
+		return now(DATE_FORMAT_NOW_SHORT);
+	}
+	
+	/**
+	 * The the current date and time.
+	 *
+	 * @param format the format
+	 * @return The the current date and time.
+	 */
+	public static String now(String format) {
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		return sdf.format(cal.getTime());
 	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-	
-	/**
-	 * The listener interface for receiving log events.
-	 * The class that is interested in processing a log
-	 * event implements this interface, and the object created
-	 * with that class is registered with a component using the
-	 * component's <code>setLogListener<code> method. When
-	 * the log event occurs, that object's appropriate
-	 * method is invoked.
-	 *
-	 * @see LogEvent
-	 */
-	public interface LogListener {
-		
-		/**
-		 * When a log is received.
-		 *
-		 * @param message the message
-		 */
-		void OnLog(String message);
-	}
-	
 }
-
-

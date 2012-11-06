@@ -17,29 +17,37 @@
  *	permissions and limitations under the Licenses.
  * 
  */
-package com.headdetect.chat.Listeners;
 
+package com.headdetect.computerremote.chat.Listeners;
 
-// TODO: Auto-generated Javadoc
+import com.headdetect.computerremote.Networking.Client;
+
 /**
- * The listener interface for receiving chat events.
- * The class that is interested in processing a chat
+ * The listener interface for receiving connection events.
+ * The class that is interested in processing a connection
  * event implements this interface, and the object created
  * with that class is registered with a component using the
- * component's <code>setOnChatListener<code> method. When
- * the chat event occurs, that object's appropriate
+ * component's <code>setOnConnectionListener<code> method. When
+ * the connection event occurs, that object's appropriate
  * method is invoked.
  *
- * @see ChatEvent
+ * @see ConnectionEvent
  */
-public interface ChatListener {
+public interface ConnectionListener {
 	
 	/**
-	 * When a chat message has been received
+	 * On disconnect.
 	 *
-	 * @param message the message
+	 * @param client the client
 	 */
-	void onChat (String message);
+	void onDisconnect(Client client);
+	
+	/**
+	 * On join.
+	 *
+	 * @param client the client
+	 */
+	void onJoin(Client client);
 
 }
 

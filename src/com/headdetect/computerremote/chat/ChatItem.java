@@ -1,6 +1,6 @@
 /*
 
-﻿ *    Copyright 2012 Brayden (headdetect) Lopez
+﻿ *    Copyright 2012 Brayden (headdetect)
  *    
  *    Dual-licensed under the Educational Community License, Version 2.0 and
  *	the GNU General Public License Version 3 (the "Licenses"); you may
@@ -17,9 +17,9 @@
  *	permissions and limitations under the Licenses.
  * 
  */
-package com.headdetect.chat;
+package com.headdetect.computerremote.chat;
 
-import com.headdetect.chat.Utilities.DateUtils;
+import com.headdetect.computerremote.Utils.DateUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -33,61 +33,99 @@ public class ChatItem {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
+
 	/** The date. */
 	private String message, name, date;
+
+	/** The float dir. */
+	private FloatDirection floatDir;
 
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-	
+
 	/**
 	 * Instantiates a new chat item.
-	 *
-	 * @param message the message
-	 * @param name the name
-	 * @param date the date
+	 * 
+	 * @param message
+	 *            the message
+	 * @param name
+	 *            the name
+	 * @param date
+	 *            the date
+	 * @param floatDir
+	 *            the float dir
 	 */
-	public ChatItem(String message, String name, String date){
+	public ChatItem(String message, String name, String date, FloatDirection floatDir) {
 		this.message = message;
 		this.name = name;
 		this.date = date;
+
+		this.setFloatDirection(floatDir);
+	}
+
+	/**
+	 * Instantiates a new chat item.
+	 * 
+	 * @param message
+	 *            the message
+	 * @param name
+	 *            the name
+	 * @param date
+	 *            the date
+	 */
+	public ChatItem(String message, String name, String date) {
+		this(message, name, DateUtils.now(DateUtils.DATE_FORMAT_NOW_SHORT), FloatDirection.Left);
+	}
+
+	/**
+	 * Instantiates a new chat item.
+	 * 
+	 * @param message
+	 *            the message
+	 * @param name
+	 *            the name
+	 */
+	public ChatItem(String message, String name, FloatDirection floatDir) {
+		this(message, name, DateUtils.now(DateUtils.DATE_FORMAT_NOW_SHORT), floatDir);
 	}
 	
 	/**
 	 * Instantiates a new chat item.
-	 *
-	 * @param message the message
-	 * @param name the name
+	 * 
+	 * @param message
+	 *            the message
+	 * @param name
+	 *            the name
 	 */
-	public ChatItem(String message, String name){
+	public ChatItem(String message, String name) {
 		this(message, name, DateUtils.now(DateUtils.DATE_FORMAT_NOW_SHORT));
 	}
-	
+
 	/**
 	 * Instantiates a new chat item.
-	 *
-	 * @param message the message
+	 * 
+	 * @param message
+	 *            the message
 	 */
-	public ChatItem(String message){
+	public ChatItem(String message) {
 		this(message, "Console");
 	}
-	
+
 	/**
 	 * Instantiates a new chat item.
 	 */
-	public ChatItem(){
+	public ChatItem() {
 		this("", "");
 	}
-	
-	
+
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
 
 	/**
 	 * Gets the message.
-	 *
+	 * 
 	 * @return the message
 	 */
 	public String getMessage() {
@@ -96,8 +134,9 @@ public class ChatItem {
 
 	/**
 	 * Sets the message.
-	 *
-	 * @param message the new message
+	 * 
+	 * @param message
+	 *            the new message
 	 */
 	public void setMessage(String message) {
 		this.message = message;
@@ -105,7 +144,7 @@ public class ChatItem {
 
 	/**
 	 * Gets the name.
-	 *
+	 * 
 	 * @return the name
 	 */
 	public String getName() {
@@ -114,8 +153,9 @@ public class ChatItem {
 
 	/**
 	 * Sets the name.
-	 *
-	 * @param name the new name
+	 * 
+	 * @param name
+	 *            the new name
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -123,7 +163,7 @@ public class ChatItem {
 
 	/**
 	 * Gets the date.
-	 *
+	 * 
 	 * @return the date
 	 */
 	public String getDate() {
@@ -132,13 +172,33 @@ public class ChatItem {
 
 	/**
 	 * Sets the date.
-	 *
-	 * @param date the new date
+	 * 
+	 * @param date
+	 *            the new date
 	 */
 	public void setDate(String date) {
 		this.date = date;
 	}
-	
+
+	/**
+	 * Gets the float direction.
+	 * 
+	 * @return the float direction
+	 */
+	public FloatDirection getFloatDirection() {
+		return floatDir;
+	}
+
+	/**
+	 * Sets the float direction.
+	 * 
+	 * @param floatDir
+	 *            the new float direction
+	 */
+	public void setFloatDirection(FloatDirection floatDir) {
+		this.floatDir = floatDir;
+	}
+
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
@@ -150,6 +210,16 @@ public class ChatItem {
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
+
+	/**
+	 * The Enum FloatDirection.
+	 */
+	enum FloatDirection {
+
+		/** The Left. */
+		Left,
+
+		/** The Right. */
+		Right
+	}
 }
-
-

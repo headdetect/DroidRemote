@@ -5,16 +5,17 @@ import java.io.IOException;
 
 import com.headdetect.computerremote.Networking.Packet;
 
-public class PacketPing extends Packet {
+public class PacketBeep extends Packet {
+	
+	public static final int ID = 0x06;
 
-	public static final int ID = 0x00;
-
-	public PacketPing() {
+	public PacketBeep() {
 		super(ID);
 	}
 
 	@Override
 	public void loadFromStream(DataInputStream stream) throws IOException {
+		throw new IOException("Is readonly packet");
 	}
 
 	@Override

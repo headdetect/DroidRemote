@@ -64,19 +64,16 @@ public class TVListAdapter extends BaseAdapter {
 	@Override 
 	public View getView(final int i, View covertView, final ViewGroup parent){
 		if(covertView == null){
-			covertView = this.inflater.inflate(R.layout.chat_item_ics, null);
+			covertView = this.inflater.inflate(R.layout.comp_chat_item, null);
 		}
 		
 		TVItem chat = items.get(i);
 		
 		TextView lblMessage = (TextView)covertView.findViewById(R.id.lblChatContents);
-		TextView lblFrom = (TextView)covertView.findViewById(R.id.lblMessageFrom);
-		//TextView lblDate = (TextView)covertView.findViewById(R.id.lblDate);
+		TextView lblFrom = (TextView)covertView.findViewById(R.id.lblDate);
 		
 		lblMessage.setText(Html.fromHtml(chat.getFile()));
 		lblFrom.setText(chat.getLength());
-		//lblDate.setText(chat.getDate());
-		
 		return covertView;
 	}
 

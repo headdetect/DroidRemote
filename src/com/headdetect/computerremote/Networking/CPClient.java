@@ -1,6 +1,6 @@
 /*
 
-﻿ *    Copyright 2012 Brayden (headdetect) Lopez
+﻿ *    Copyright 2012 Brayden (headdetect)
  *    
  *    Dual-licensed under the Educational Community License, Version 2.0 and
  *	the GNU General Public License Version 3 (the "Licenses"); you may
@@ -19,11 +19,19 @@
  */
 package com.headdetect.computerremote.Networking;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 
-public class PacketWriter {
+import com.headdetect.computerremote.Networking.packets.PacketCommand;
+
+/**
+ * The Class CPClient.
+ */
+public class CPClient extends Client {
+
+
 
 	// ===========================================================
 	// Constants
@@ -33,24 +41,20 @@ public class PacketWriter {
 	// Fields
 	// ===========================================================
 
-	private DataOutputStream out;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
+	
 	/**
-	 * Instantiates a new packet writer.
-	 * 
-	 * @param out
-	 *            the out
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 * Instantiates a new Control Panel type client.
+	 *
+	 * @param s the socket it connects from
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	public PacketWriter(OutputStream out) throws IOException {
-		this.out = new DataOutputStream(out);
+	public CPClient(Socket s) throws IOException {
+		super(s);
 	}
-
+	
 	// ===========================================================
 	// Getter & Setter
 	// ===========================================================
@@ -58,27 +62,59 @@ public class PacketWriter {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
+	
+	/* (non-Javadoc)
+	 * @see com.headdetect.computerremote.Networking.Client#onRecievePacket(com.headdetect.computerremote.Networking.Packet)
+	 */
+	@Override
+	protected void onRecievePacket(Packet packet) {
+		// TODO Auto-generated method stub
+
+	}
+	
 
 	// ===========================================================
 	// Methods
 	// ===========================================================
-
+	
 	/**
-	 * Sends the packet provided.
+	 * Connect to the specified address, and returns a client.
 	 * 
-	 * @param packet
-	 *            Packet to send
+	 * @param address
+	 *            the address
+	 * @return the connected client
 	 * @throws IOException
-	 *             If there's an error writing to the socket
+	 *             Signals that an I/O exception has occurred.
 	 */
-	public void sendPacket(Packet packet) throws IOException {
-		out.writeByte(packet.id);
-		out.write(packet.writeData());
-		out.flush();
+	public static CPClient connect(String address) throws IOException {
+		InetAddress localAddress = InetAddress.getByName(address);
+		InetSocketAddress localSocketAddress = new InetSocketAddress(localAddress, 45903);
+
+		Socket socket = new Socket();
+		socket.connect(localSocketAddress, 5000);
+		CPClient client = new CPClient(socket);
+
+		return client;
+	}
+	
+	/**
+	 * Send a command.
+	 * 
+	 * @param message
+	 *            the message
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws Exception
+	 *             the exception
+	 */
+	public void sendCommand(String cmd) throws IOException, Exception {
+		if (cmd == null || cmd.isEmpty() || !mPacketQueue.isRunning())
+			return;
+
+		mPacketQueue.sendPacket(new PacketCommand(cmd));
 	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-
 }

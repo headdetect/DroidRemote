@@ -1,6 +1,6 @@
 /*
 
-﻿ *    Copyright 2012 Brayden (headdetect) Lopez
+﻿ *    Copyright 2012 Brayden (headdetect)
  *    
  *    Dual-licensed under the Educational Community License, Version 2.0 and
  *	the GNU General Public License Version 3 (the "Licenses"); you may
@@ -17,10 +17,10 @@
  *	permissions and limitations under the Licenses.
  * 
  */
-package com.headdetect.chat;
+
+package com.headdetect.computerremote.chat;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -38,10 +38,11 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-import com.headdetect.chat.Listeners.ChatListener;
-import com.headdetect.chat.Listeners.ConnectionListener;
-import com.headdetect.chat.Networking.Client;
 import com.headdetect.computerremote.R;
+import com.headdetect.computerremote.Networking.Client;
+import com.headdetect.computerremote.chat.ChatItem.FloatDirection;
+import com.headdetect.computerremote.chat.Listeners.ChatListener;
+import com.headdetect.computerremote.chat.Listeners.ConnectionListener;
 
 /**
  * The Class ChatClientActivity.
@@ -64,7 +65,7 @@ public class ChatClientActivity extends Activity {
 
 	private ListView lstMessages;
 
-	private Client mClient;
+	private ChatClient mClient;
 
 	// ===========================================================
 	// Constructors
@@ -86,7 +87,7 @@ public class ChatClientActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.layout_chat_main);
+		setContentView(R.layout.activity_chat);
 
 		chatAdapter = new ChatListAdapter(this, new ArrayList<ChatItem>());
 
@@ -99,7 +100,7 @@ public class ChatClientActivity extends Activity {
 		btnSendMessage = (Button) findViewById(R.id.btnSend);
 		btnSendMessage.setOnClickListener(btnSendMessageClickListener);
 
-		Client.setOnChatListener(chatListener);
+		ChatClient.setOnChatListener(chatListener);
 		Client.setOnConnectionListener(connectionListener);
 
 		final Intent intent = getIntent();
@@ -144,7 +145,7 @@ public class ChatClientActivity extends Activity {
 
 		@Override
 		public void onChat(String message) {
-			chatAdapter.addItem(new ChatItem("<html>" + message + "</html>", "Friend"));
+			chatAdapter.addItem(new ChatItem("<html>" + message + "</html>", "Computer", FloatDirection.Right));
 		}
 	};
 
@@ -153,12 +154,12 @@ public class ChatClientActivity extends Activity {
 
 		@Override
 		public void onDisconnect(Client client) {
-			chatAdapter.addItem(new ChatItem(client.getName() + " left the chat room", ""));
+			chatAdapter.addItem(new ChatItem("<html><i>You disconnected from the computer.</i></html>", ""));
 		}
 
 		@Override
 		public void onJoin(Client client) {
-			chatAdapter.addItem(new ChatItem(client.getName() + " joined the chat room", ""));
+			chatAdapter.addItem(new ChatItem("<html><i>You connected to the computer.</i></html>", ""));
 		}
 	};
 
@@ -209,13 +210,12 @@ public class ChatClientActivity extends Activity {
 
 			try {
 
-				mClient = Client.connect(arg0[0].substring(1, arg0[0].length()));
-				new Thread(mClient).run();
-
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-				return true;
-			} catch (IOException e) {
+				mClient = ChatClient.connect(arg0[0].substring(1, arg0[0].length()));
+				if (mClient != null) {
+					new Thread(mClient).run();
+				}
+				
+			} catch (Exception e) {
 				e.printStackTrace();
 				return true;
 			}
