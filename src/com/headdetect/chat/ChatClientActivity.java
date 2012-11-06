@@ -210,6 +210,7 @@ public class ChatClientActivity extends Activity {
 			try {
 
 				mClient = Client.connect(arg0[0].substring(1, arg0[0].length()));
+				new Thread(mClient).run();
 
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
