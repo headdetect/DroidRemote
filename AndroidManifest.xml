@@ -21,9 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controlpanel.ControlPanelActivity" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"></activity>
         <activity android:name=".chat.ChatClientActivity" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"></activity>
-        <activity android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" android:name="com.headdetect.tv.TVActivity"></activity>
+        <activity android:theme="@android:style/Theme.Holo.Light" android:name="com.headdetect.tv.TVActivity" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"></activity>
     </application>
 
 </manifest>

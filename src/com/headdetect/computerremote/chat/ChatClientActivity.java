@@ -212,7 +212,7 @@ public class ChatClientActivity extends Activity {
 
 				mClient = ChatClient.connect(arg0[0].substring(1, arg0[0].length()));
 				if (mClient != null) {
-					new Thread(mClient).run();
+					new Thread(mClient).start();
 				}
 				
 			} catch (Exception e) {

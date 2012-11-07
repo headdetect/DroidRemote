@@ -20,7 +20,7 @@ public class TVClient extends Client {
 	// Fields
 	// ===========================================================
 	
-	private OnVideoListener mListener;
+	private static OnVideoListener mListener;
 
 	// ===========================================================
 	// Constructors
@@ -34,8 +34,8 @@ public class TVClient extends Client {
 	// Getter & Setter
 	// ===========================================================
 
-	public void setOnVideoRecievedListener(OnVideoListener mListener){
-		this.mListener = mListener;
+	public static void setOnVideoRecievedListener(OnVideoListener mListener){
+		TVClient.mListener = mListener;
 	}
 	
 	public PacketQue getPacketQueue() {
@@ -52,7 +52,7 @@ public class TVClient extends Client {
 			PacketVideo video = (PacketVideo) packet;
 			
 			if(mListener != null){
-				mListener.onVideoRecieved(video.getVideo(), video.getVideoLength());
+				mListener.onVideoRecieved(this, video.getVideo(), video.getVideoLength());
 			}
 		}
 
@@ -88,7 +88,7 @@ public class TVClient extends Client {
 	
 	public interface OnVideoListener {
 		
-		void onVideoRecieved(String name, String length);
+		void onVideoRecieved(TVClient client, String name, String length);
 	}
 
 

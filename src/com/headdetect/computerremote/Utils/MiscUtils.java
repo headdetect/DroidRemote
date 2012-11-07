@@ -1,43 +1,19 @@
-package com.headdetect.tv.Packets;
+package com.headdetect.computerremote.Utils;
 
-import java.io.DataInputStream;
-import java.io.IOException;
+import java.util.Arrays;
 
-import com.headdetect.computerremote.Networking.Packet;
-import com.headdetect.computerremote.Utils.MiscUtils;
-
-public class PacketControl extends Packet {
-
+public class MiscUtils {
 	// ===========================================================
 	// Constants
 	// ===========================================================
-
-	public static final int ID = 0x0a;
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
 
-	private ControlType ctrl;
-	
-	private String uri;
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
-
-	public PacketControl(ControlType ctrl) {
-		super(ID);
-
-		this.ctrl = ctrl;
-	}
-	
-	public PacketControl(ControlType ctrl, String uri) {
-		super(ID);
-
-		this.ctrl = ctrl;
-		this.uri = uri;
-	}
 
 	// ===========================================================
 	// Getter & Setter
@@ -47,20 +23,23 @@ public class PacketControl extends Packet {
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
 
-	@Override
-	public void loadFromStream(DataInputStream stream) throws IOException {
-		throw new IOException("Is write only packet");
-		// For now
-	}
-
-	@Override
-	public byte[] writeData() throws IOException {
-		return MiscUtils.concatAll(Packet.getShort((short) ctrl.ordinal()), Packet.getString(uri));
-	}
-
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	public static byte[] concatAll(byte[] bs, byte[]... b) {
+		int totalLength = bs.length;
+		for (byte[] array : b) {
+			totalLength += array.length;
+		}
+		byte[] result = Arrays.copyOf(bs, totalLength);
+		int offset = bs.length;
+		for (byte[] array : b) {
+			System.arraycopy(array, 0, result, offset, array.length);
+			offset += array.length;
+		}
+		return result;
+	}
 
 	// ===========================================================
 	// Inner and Anonymous Classes

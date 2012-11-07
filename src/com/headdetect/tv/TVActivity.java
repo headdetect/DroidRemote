@@ -8,9 +8,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.headdetect.tv.Packets.ControlType;
+import com.headdetect.tv.Packets.PacketControl;
 import com.headdetect.tv.Packets.PacketVideo;
 import com.headdetect.tv.Packets.TVClient;
 import com.headdetect.tv.Packets.TVClient.OnVideoListener;
@@ -34,12 +39,31 @@ public class TVActivity extends Activity {
 	private OnVideoListener mListener = new OnVideoListener() {
 
 		@Override
-		public void onVideoRecieved(String name, String length) {
+		public void onVideoRecieved(TVClient client, String name, String length) {
 			if (mListAdapter != null) {
 				mListAdapter.addItem(new TVItem(name, length));
 			}
 		}
 
+	};
+	
+	
+	private OnItemClickListener mClickListener = new OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+			String uri = mListAdapter.getItem(arg2).getFile();
+			
+			if(mClient != null){
+				try {
+					mClient.getPacketQueue().sendPacket(new PacketControl(ControlType.Play, uri));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
+		}
+		
 	};
 
 	// ===========================================================
@@ -60,9 +84,14 @@ public class TVActivity extends Activity {
 
 		mList = new ListView(this);
 		mListAdapter = new TVListAdapter(this, new ArrayList<TVItem>());
+		
 		mList.setAdapter(mListAdapter);
+		mList.setOnItemClickListener(mClickListener);
 		this.setContentView(mList);
 
+		
+		TVClient.setOnVideoRecievedListener(mListener);
+		
 		final Intent intent = getIntent();
 
 		if (intent != null) {
@@ -102,8 +131,7 @@ public class TVActivity extends Activity {
 
 				mClient = TVClient.connect(arg0[0].substring(1, arg0[0].length()));
 				if (mClient != null) {
-					mClient.setOnVideoRecievedListener(mListener);
-					new Thread(mClient).run();
+					new Thread(mClient).start();
 				}
 
 			} catch (UnknownHostException e) {
