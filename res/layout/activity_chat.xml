@@ -15,8 +15,7 @@
         android:layout_above="@+id/LinearLayout2"
         android:layout_alignParentTop="true"
         android:background="@color/Light_Gray"
-        android:orientation="vertical" >
-
+        android:orientation="vertical">
         <ListView
             android:id="@+id/lstChat"
             android:layout_width="match_parent"
