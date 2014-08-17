@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="2" >
+
+    <dataSet config="20.0.0" >
+        <source path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\build\intermediates\exploded-aar\com.android.support\support-v4\20.0.0\res" />
+    </dataSet>
+    <dataSet config="main" >
+        <source path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res" >
+            <file
+                name="blue_bg"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\drawable\blue_bg.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="button_arrow"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\drawable\button_arrow.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="btn_arrow"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\drawable-hdpi\btn_arrow.png"
+                qualifiers="hdpi-v4"
+                type="drawable" />
+            <file
+                name="btn_arrow_down"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\drawable-hdpi\btn_arrow_down.png"
+                qualifiers="hdpi-v4"
+                type="drawable" />
+            <file
+                name="btn_mouse_left"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\drawable-hdpi\btn_mouse_left.png"
+                qualifiers="hdpi-v4"
+                type="drawable" />
+            <file
+                name="btn_mouse_left_down"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\drawable-hdpi\btn_mouse_left_down.png"
+                qualifiers="hdpi-v4"
+                type="drawable" />
+            <file
+                name="btn_mouse_right"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\drawable-hdpi\btn_mouse_right.png"
+                qualifiers="hdpi-v4"
+                type="drawable" />
+            <file
+                name="btn_mouse_right_down"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\drawable-hdpi\btn_mouse_right_down.png"
+                qualifiers="hdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_action_search"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\drawable-hdpi\ic_action_search.png"
+                qualifiers="hdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\drawable-hdpi\ic_launcher.png"
+                qualifiers="hdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_media_next"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\drawable-hdpi\ic_media_next.png"
+                qualifiers="hdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_media_pause"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\drawable-hdpi\ic_media_pause.png"
+                qualifiers="hdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_media_play"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\drawable-hdpi\ic_media_play.png"
+                qualifiers="hdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_media_previous"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\drawable-hdpi\ic_media_previous.png"
+                qualifiers="hdpi-v4"
+                type="drawable" />
+            <file
+                name="mousepad"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\drawable-hdpi\mousepad.png"
+                qualifiers="hdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\drawable-ldpi\ic_launcher.png"
+                qualifiers="ldpi-v4"
+                type="drawable" />
+            <file
+                name="ic_action_search"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\drawable-mdpi\ic_action_search.png"
+                qualifiers="mdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\drawable-mdpi\ic_launcher.png"
+                qualifiers="mdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_action_search"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\drawable-xhdpi\ic_action_search.png"
+                qualifiers="xhdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\drawable-xhdpi\ic_launcher.png"
+                qualifiers="xhdpi-v4"
+                type="drawable" />
+            <file
+                name="activity_chat"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\layout\activity_chat.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="activity_computer_browser"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\layout\activity_computer_browser.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="activity_mousepad"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\layout\activity_mousepad.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="activity_tvremote"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\layout\activity_tvremote.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="comp_chat_item"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\layout\comp_chat_item.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="menu_select_computer"
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\menu\menu_select_computer.xml"
+                qualifiers=""
+                type="menu" />
+            <file
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\values\colors.xml"
+                qualifiers="" >
+                <color name="Light_Gray" >#eee
+                </color>
+                <color name="Dark_Gray" >#7f7f7f
+                </color>
+                <color name="light_gray" >#AAA
+                </color>
+                <color name="Gray" >#ddd
+                </color>
+
+                <drawable name="blue" >
+#ff33b5e5
+                </drawable>
+
+                <color name="Black" >#000
+                </color>
+            </file>
+            <file
+                path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\main\res\values\strings.xml"
+                qualifiers="" >
+                <string name="run_cmd" >Run Command
+                </string>
+                <string name="power_controls" >Power Controls
+                </string>
+                <string name="manually" >Enter IP
+                </string>
+                <string name="design_computer_name" >&lt;Computer Name>
+                </string>
+                <string name="play_music" >Play Music
+                </string>
+                <string name="start_chatting" >Start Chatting
+                </string>
+
+                <string-array name="power_options" >
+                    <item>
+Shutdown
+                    </item>
+                    <item>
+Restart
+                    </item>
+                    <item>
+Sleep
+                    </item>
+                    <item>
+Log Off
+                    </item>
+                    <item>
+Lock
+                    </item>
+                </string-array>
+
+                <string name="hello" >Hello World, ComputerRemoteActivity!
+                </string>
+                <string name="loading" >Loading
+                </string>
+                <string name="empty" ></string>
+                <string name="control_mouse" >Control Mouse
+                </string>
+                <string name="txt_chat_hint" >Type a message
+                </string>
+                <string name="app_name" >Computer Remote
+                </string>
+
+                <string-array name="options" >
+                    <item>
+TV
+                    </item>
+                    <item>
+Chat
+                    </item>
+                    <item>
+Power
+                    </item>
+                    <item>
+Run Command
+                    </item>
+                    <item>
+Beep
+                    </item>
+                    <item>
+Wireless Mouse
+                    </item>
+                </string-array>
+
+                <string name="refresh" >Refresh
+                </string>
+                <string name="sleep" >Sleep
+                </string>
+            </file>
+        </source>
+        <source path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\build\generated\res\rs\debug" />
+        <source path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\build\generated\res\generated\debug" />
+    </dataSet>
+    <dataSet config="debug" >
+        <source path="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\src\debug\res" />
+    </dataSet>
+
+</merger>

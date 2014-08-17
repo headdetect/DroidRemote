@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\build\intermediates\pre-dexed\debug\support-annotations-20.0.0-20af6f1aee46016ae1a49114542f14382b375f87.jar"
+        jar="C:\Users\Brayden\AppData\Local\Android\android-studio1\sdk\extras\android\m2repository\com\android\support\support-annotations\20.0.0\support-annotations-20.0.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="9d9013e9ff35fc3756411e62873c363c70c638fa"/>
+    <item
+        dex="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\build\intermediates\pre-dexed\debug\internal_impl-20.0.0-8d14db37046d2513fc46ea1f5ad5ba3a2bca2e3d.jar"
+        jar="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\build\intermediates\exploded-aar\com.android.support\support-v4\20.0.0\libs\internal_impl-20.0.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="e40b3078e3fbd353c9f44da8df25a8fc0078209d"/>
+    <item
+        dex="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\build\intermediates\pre-dexed\debug\classes-f7629811fa62d680812977a97eaa77d7d2d869f0.jar"
+        jar="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\build\intermediates\exploded-aar\com.android.support\support-v4\20.0.0\classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="8694693636ab36910c8100ce527c258ff3ebece0"/>
+    <item
+        dex="C:\Users\Brayden\AndroidStudioProjects\ComputerRemote-Client\app\build\intermediates\pre-dexed\debug\jmdns-3.4.1-435f9dafa91942fa3d042c469f3d17d1d0061c6e.jar"
+        jar="C:\Users\Brayden\.gradle\caches\modules-2\files-2.1\javax.jmdns\jmdns\3.4.1\7ba2dcf7effb5ca9b00736b2a066fff3dd01d432\jmdns-3.4.1.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="7ba2dcf7effb5ca9b00736b2a066fff3dd01d432"/>
+
+</pre-dex-items>

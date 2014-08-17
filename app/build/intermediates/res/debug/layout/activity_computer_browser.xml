@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ListView
+        android:id="@+id/lstComputers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" >
+
+    </ListView>
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/lstComputers"
+        android:layout_marginLeft="32dp" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/progressBar1"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@+id/progressBar1"
+        android:text="@string/loading"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+</RelativeLayout><!-- From: file:/C:/Users/Brayden/AndroidStudioProjects/ComputerRemote-Client/app/src/main/res/layout/activity_computer_browser.xml -->

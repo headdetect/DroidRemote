@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- From: file:/C:/Users/Brayden/AndroidStudioProjects/ComputerRemote-Client/app/src/main/res/values/strings.xml -->
+    <eat-comment />
+
+    <string-array name="options">
+        <item>TV</item>
+        <item>Chat</item>
+        <item>Power</item>
+        <item>Run Command</item>
+        <item>Beep</item>
+        <item>Wireless Mouse</item>
+    </string-array>
+    <string-array name="power_options">
+        <item>Shutdown</item>
+        <item>Restart</item>
+        <item>Sleep</item>
+        <item>Log Off</item>
+        <item>Lock</item>
+    </string-array>
+    <!-- From: file:/C:/Users/Brayden/AndroidStudioProjects/ComputerRemote-Client/app/src/main/res/values/colors.xml -->
+    <eat-comment />
+
+    <color name="Black">#000</color>
+    <color name="Dark_Gray">#7f7f7f</color>
+    <color name="Gray">#ddd</color>
+    <color name="Light_Gray">#eee</color>
+    <color name="light_gray">#AAA</color>
+
+    <drawable name="blue">#ff33b5e5</drawable>
+    <!-- From: file:/C:/Users/Brayden/AndroidStudioProjects/ComputerRemote-Client/app/src/main/res/values/strings.xml -->
+    <eat-comment />
+
+    <string name="app_name">Computer Remote</string>
+    <string name="control_mouse">Control Mouse</string>
+    <string name="design_computer_name">&lt;Computer Name></string>
+    <string name="empty"></string>
+    <string name="hello">Hello World, ComputerRemoteActivity!</string>
+    <string name="loading">Loading</string>
+    <string name="manually">Enter IP</string>
+    <string name="play_music">Play Music</string>
+    <string name="power_controls">Power Controls</string>
+    <string name="refresh">Refresh</string>
+    <string name="run_cmd">Run Command</string>
+    <string name="sleep">Sleep</string>
+    <string name="start_chatting">Start Chatting</string>
+    <string name="txt_chat_hint">Type a message</string>
+
+</resources>
