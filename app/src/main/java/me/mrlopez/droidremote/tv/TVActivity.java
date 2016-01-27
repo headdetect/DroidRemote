@@ -39,7 +39,7 @@ public class TVActivity extends Activity {
 	private OnVideoListener mListener = new OnVideoListener() {
 
 		@Override
-		public void onVideoRecieved(TVClient client, String name, String length) {
+		public void onVideoReceived(TVClient client, String name, String length) {
 			if (mListAdapter != null) {
 				mListAdapter.addItem(new TVItem(name, length));
 			}
@@ -90,7 +90,7 @@ public class TVActivity extends Activity {
 		this.setContentView(mList);
 
 		
-		TVClient.setOnVideoRecievedListener(mListener);
+		TVClient.setOnVideoReceivedListener(mListener);
 		
 		final Intent intent = getIntent();
 

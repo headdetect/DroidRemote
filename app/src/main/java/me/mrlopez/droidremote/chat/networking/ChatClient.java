@@ -52,7 +52,7 @@ public class ChatClient extends TCPClient {
 	// ===========================================================
 	
 	@Override
-	protected void onRecievePacket(Packet packet) {
+	protected void onReceivePacket(Packet packet) {
 		if(packet.getClass().isAssignableFrom(PacketMessage.class)){
 		
 			PacketMessage msg = (PacketMessage)packet;

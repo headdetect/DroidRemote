@@ -34,7 +34,7 @@ public class TVClient extends TCPClient {
 	// Getter & Setter
 	// ===========================================================
 
-	public static void setOnVideoRecievedListener(OnVideoListener mListener){
+	public static void setOnVideoReceivedListener(OnVideoListener mListener){
 		TVClient.mListener = mListener;
 	}
 	
@@ -47,12 +47,12 @@ public class TVClient extends TCPClient {
 	// ===========================================================
 	
 	@Override
-	protected void onRecievePacket(Packet packet) {
+	protected void onReceivePacket(Packet packet) {
 		if(packet.id == 0x09){
 			PacketVideo video = (PacketVideo) packet;
 			
 			if(mListener != null){
-				mListener.onVideoRecieved(this, video.getVideo(), video.getVideoLength());
+				mListener.onVideoReceived(this, video.getVideo(), video.getVideoLength());
 			}
 		}
 
@@ -77,9 +77,8 @@ public class TVClient extends TCPClient {
 
 		Socket socket = new Socket();
 		socket.connect(localSocketAddress, 5000);
-		TVClient client = new TVClient(socket);
 
-		return client;
+		return new TVClient(socket);
 	}
 	
 	// ===========================================================
@@ -88,7 +87,7 @@ public class TVClient extends TCPClient {
 	
 	public interface OnVideoListener {
 		
-		void onVideoRecieved(TVClient client, String name, String length);
+		void onVideoReceived(TVClient client, String name, String length);
 	}
 
 

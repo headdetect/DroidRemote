@@ -23,6 +23,7 @@ package me.mrlopez.droidremote.chat;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -115,6 +116,8 @@ public class ChatClientActivity extends Activity {
 			Toast.makeText(this, "Critical Error occurred while setting up", Toast.LENGTH_LONG).show();
 		}
 
+		ActionBar bar = getActionBar();
+		if (bar != null) bar.setDisplayHomeAsUpEnabled(true);
 	}
 
 	// ===========================================================
@@ -169,7 +172,7 @@ public class ChatClientActivity extends Activity {
 
 		String message = txtMessage.getText().toString();
 
-		if (message == null || message.isEmpty())
+		if (message.isEmpty())
 			return;
 
 		message = message.replace(">", "&gt;");

@@ -19,6 +19,7 @@
  */
 package me.mrlopez.droidremote.app;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -74,8 +75,6 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
     // Fields
     // ===========================================================
 
-    private ListView mList;
-
     private ArrayAdapter<Computer> mAdapter;
 
     private TextView mLabel;
@@ -110,7 +109,7 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
 
         mAdapter = new ArrayAdapter<Computer>(this, android.R.layout.simple_list_item_1);
 
-        mList = (ListView) findViewById(R.id.lstComputers);
+        ListView mList = (ListView) findViewById(R.id.lstComputers);
         mList.setAdapter(mAdapter);
         mList.setOnItemClickListener(new OnItemClickListener() {
 
@@ -133,7 +132,6 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
 
         mLoader = new ComputerList();
         mLoader.execute();
-
     }
 
     /**
@@ -249,17 +247,11 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
 
             @Override
             public void run() {
-                InetAddress address = null;
+                InetAddress address;
                 try {
                     address = InetAddress.getByName(txt);
                 } catch (UnknownHostException e) {
-                    SelectComputerActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(SelectComputerActivity.this, "Error finding specified address", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
+                    makeToast("Error finding specified address");
                     return;
                 }
                 final Computer c = new Computer(txt, address);
@@ -274,6 +266,7 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
 
                     @Override
                     public void run() {
+                        mLabel.setText("");
                         mAdapter.add(c);
                     }
 
@@ -297,7 +290,7 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
             sillyIntent.putExtra("IP", comp.getIp().toString());
             startActivity(sillyIntent);
 
-            finish();
+            // finish();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -425,7 +418,6 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
          */
         @Override
         protected void onPostExecute(Void parms) {
-
             mLabel.setText(mAdapter.isEmpty() ? " No servers found :(" : "");
             mProg.setVisibility(View.GONE);
         }
@@ -456,9 +448,7 @@ public class SelectComputerActivity extends FragmentActivity implements Computer
          */
         @Override
         protected Boolean doInBackground(String... arg0) {
-
             try {
-
                 CommandingClient mClient = CommandingClient.connect(arg0[0].substring(1, arg0[0].length()));
                 Packet.QuickSend(mClient.getSocket(), new PacketCommand(arg0[1]));
                 mClient.disconnect();

@@ -200,7 +200,7 @@ public class ByteConverter {
 		if ( data == null || data.length != 2 )
 			return 0x0;
 		// ----------
-		return (short) ( ( 0xff & data[ 0 ] ) << 8 | ( 0xff & data[ 1 ] ) << 0 );
+		return (short) ( ( 0xff & data[ 0 ] ) << 8 | (0xff & data[1]));
 	}
 
 	public static short[] toShortA( byte[] data ) {
@@ -219,7 +219,7 @@ public class ByteConverter {
 		if ( data == null || data.length != 2 )
 			return 0x0;
 		// ----------
-		return (char) ( ( 0xff & data[ 0 ] ) << 8 | ( 0xff & data[ 1 ] ) << 0 );
+		return (char) ( ( 0xff & data[ 0 ] ) << 8 | (0xff & data[1]));
 	}
 
 	public static char[] toCharA( byte[] data ) {
@@ -239,7 +239,7 @@ public class ByteConverter {
 			return 0x0;
 		// ----------
 		return (int) ( // NOTE: type cast not necessary for int
-		( 0xff & data[ 0 ] ) << 24 | ( 0xff & data[ 1 ] ) << 16 | ( 0xff & data[ 2 ] ) << 8 | ( 0xff & data[ 3 ] ) << 0 );
+		( 0xff & data[ 0 ] ) << 24 | ( 0xff & data[ 1 ] ) << 16 | ( 0xff & data[ 2 ] ) << 8 | (0xff & data[3]));
 	}
 
 	public static int[] toIntA( byte[] data ) {
@@ -261,7 +261,7 @@ public class ByteConverter {
 		// (Below) convert to longs before shift because digits
 		// are lost with ints beyond the 32-bit limit
 		(long) ( 0xff & data[ 0 ] ) << 56 | (long) ( 0xff & data[ 1 ] ) << 48 | (long) ( 0xff & data[ 2 ] ) << 40 | (long) ( 0xff & data[ 3 ] ) << 32
-				| (long) ( 0xff & data[ 4 ] ) << 24 | (long) ( 0xff & data[ 5 ] ) << 16 | (long) ( 0xff & data[ 6 ] ) << 8 | (long) ( 0xff & data[ 7 ] ) << 0 );
+				| (long) ( 0xff & data[ 4 ] ) << 24 | (long) ( 0xff & data[ 5 ] ) << 16 | (long) ( 0xff & data[ 6 ] ) << 8 | (long) (0xff & data[7]));
 	}
 
 	public static long[] toLongA( byte[] data ) {

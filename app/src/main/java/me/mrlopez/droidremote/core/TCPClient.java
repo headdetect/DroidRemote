@@ -67,7 +67,6 @@ public abstract class TCPClient implements Runnable {
 			mPacketQueue = new PacketQue(s);
 		} catch (IOException e) {
 			disconnect();
-			return;
 		}
 
 	}
@@ -122,8 +121,7 @@ public abstract class TCPClient implements Runnable {
 					continue;
 				}
 
-				onRecievePacket(pack);
-				
+				onReceivePacket(pack);
 			}
 
 		} catch (IOException e) {
@@ -134,7 +132,7 @@ public abstract class TCPClient implements Runnable {
 		}
 	}
 	
-	protected abstract void onRecievePacket(Packet packet);
+	protected abstract void onReceivePacket(Packet packet);
 	
 
 	// ===========================================================

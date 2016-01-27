@@ -64,12 +64,9 @@ public class CommandingClient extends TCPClient {
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
 	// ===========================================================
-	
-	/* (non-Javadoc)
-	 * @see com.headdetect.computerremote.Networking.Client#onRecievePacket(com.headdetect.computerremote.Networking.Packet)
-	 */
+
 	@Override
-	protected void onRecievePacket(Packet packet) {
+	protected void onReceivePacket(Packet packet) {
 		// TODO Auto-generated method stub
 
 	}

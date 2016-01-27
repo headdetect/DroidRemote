@@ -25,7 +25,8 @@
         </activity>
         <activity
             android:name=".chat.ChatClientActivity"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale" >
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
+            android:parentActivityName=".app.SelectComputerActivity">
         </activity>
         <activity
             android:name=".tv.TVActivity"

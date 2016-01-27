@@ -25,6 +25,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 import android.util.SparseArray;
 
@@ -218,7 +219,9 @@ public abstract class Packet {
 	 *             Signals that an I/O exception has occurred.
 	 */
 	public static int readInt(DataInputStream mStream) throws IOException {
-		return ByteSwapper.swap(mStream.readInt());
+		if (ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN)
+			return ByteSwapper.swap(mStream.readInt());
+		return mStream.readInt();
 	}
 
 	/**
@@ -231,7 +234,9 @@ public abstract class Packet {
 	 *             Signals that an I/O exception has occurred.
 	 */
 	public static short readShort(DataInputStream mStream) throws IOException {
-		return ByteSwapper.swap(mStream.readShort());
+		if (ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN)
+			return ByteSwapper.swap(mStream.readShort());
+		return mStream.readShort();
 	}
 
 	/**
@@ -262,7 +267,7 @@ public abstract class Packet {
 	 * @return the int
 	 */
 	public static byte[] getInt(int integer) {
-		return ByteBuffer.allocate(4).putInt(integer).array();
+		return ByteBuffer.allocate(4).putInt(ByteSwapper.swap(integer)).array();
 	}
 
 	/**
@@ -273,7 +278,7 @@ public abstract class Packet {
 	 * @return the short
 	 */
 	public static byte[] getShort(short shawty) {
-		return ByteBuffer.allocate(2).putShort(shawty).array();
+		return ByteBuffer.allocate(2).putShort(ByteSwapper.swap(shawty)).array();
 	}
 
 	// ===========================================================
